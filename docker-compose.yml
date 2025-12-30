@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: shiftaware-app
+    environment:
+      # Using existing PostgreSQL container from general_prototyping_repo network
+      # Container: general_prototyping_repo-db-1 (alias: db)
+      # Database: appdb, User: postgres, Password: postgres
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/appdb
+      PORT: 3005
+      NODE_ENV: development
+    ports:
+      - "3005:3005"
+    networks:
+      - general_prototyping_repo_default
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+
+networks:
+  general_prototyping_repo_default:
+    external: true
+
