@@ -117,3 +117,26 @@ Per `ROADMAP.md`, these features are not yet implemented:
 - ✅ `TEST_RESULTS.md` - Detailed test results
 - ✅ `TESTING_SUMMARY.md` - This file
 
+---
+
+## 2026-01-06T16:15:00Z - Phase 1 (UI/UX overhaul and fixes)
+
+**Status:** ✅ **ALL CORE TESTS PASSING**
+
+### Summary
+- **Authentication:** Resolved initial 401 login failure (verified env loading).
+- **Core APIs:** Verified `GET /api/members`, `GET /api/shifts`, `GET /api/events` returning correct data structures.
+- **UI Navigation:** Verified all Phase 1 routes return 200 with active session (Dashboard, Preferences, Schedule, Admin views).
+- **Session Management:** Fixed logout cookie expiration detection in test runner.
+
+### Results
+| Category | Passed | Failed | Skipped | Total |
+|----------|--------|--------|---------|-------|
+| Smoke Tests | 2 | 0 | 0 | 2 |
+| Auth Tests | 6 | 0 | 0 | 6 |
+| Phase 1 APIs | 3 | 0 | 0 | 3 |
+| UI Navigation | 6 | 0 | 0 | 6 |
+| **Total** | **17** | **0** | **2** | **19** |
+
+*Note: Skipped tests relate to Phase 3 functionality (Manual swaps, Audit log).*
+

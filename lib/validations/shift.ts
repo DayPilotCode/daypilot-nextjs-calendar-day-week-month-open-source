@@ -6,7 +6,7 @@ export const shiftRoleSchema = z.object({
   count: z.number().int().positive().default(1),
 });
 
-export const shiftSchema = z.object({
+export const shiftSchemaBase = z.object({
   eventId: z.string().cuid(),
   type: z.nativeEnum(ShiftType),
   startTime: z.string().datetime(),
@@ -17,7 +17,9 @@ export const shiftSchema = z.object({
   requiredRoles: z.array(shiftRoleSchema).min(1),
   capacity: z.number().int().positive().default(2),
   isTemplate: z.boolean().optional().default(false),
-}).refine(
+});
+
+export const shiftSchema = shiftSchemaBase.refine(
   (data) => {
     const start = new Date(data.startTime);
     const end = new Date(data.endTime);
@@ -34,7 +36,7 @@ export const shiftSchema = z.object({
   { message: "Duration must match time difference" }
 );
 
-export const updateShiftSchema = shiftSchema.partial().extend({
+export const updateShiftSchema = shiftSchemaBase.partial().extend({
   id: z.string().cuid(),
 });
 

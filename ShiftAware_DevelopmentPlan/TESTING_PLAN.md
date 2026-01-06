@@ -49,6 +49,29 @@ Goal: validate env-based auth (no hashing), cookie flow.
    - Wrong password → 401.
    - Cookie not set (secure flag in http) → run over http in dev; ensure `secure` only in production.
 
+## UI & Navigation Suite (Phase 1 Overhaul)
+Goal: validate new sidebar/header navigation and design system compliance.
+
+1) **Layout Shell**
+   - Verify Header is fixed at the top.
+   - Verify Sidebar is visible on desktop (>1024px) and contains all nav items.
+   - Verify Sidebar collapses or is hidden on mobile.
+2) **Navigation Flow**
+   - Click each Sidebar item and verify URL change and page content.
+   - Verify Logout clears the `authenticated` cookie and redirects to `/login`.
+3) **Dashboard UI**
+   - Verify "Welcome Fox" header and stats cards are present.
+   - Verify Events list shows correct status and "Run Assignment Engine" button.
+4) **Preferences UI**
+   - Verify DayPilot calendar loads with shifts.
+   - Verify clicking shifts toggles selection and updates the ranking sidebar.
+   - Verify "Submit Selection" button logic (min 2 shifts).
+5) **Design System Audit**
+   - Check background color (`#fafaf9`).
+   - Check primary button color (`#0ea5e9`).
+   - Check rounded corners (`rounded-2xl`, `rounded-3xl` for login).
+   - Check modern icons (Lucide).
+
 ## Feature Suites (add as features land)
 - **Shifts & Preferences (FR-001/FR-002):** CRUD APIs, validation, UI flows.
 - **Assignment Algorithm (FR-004):** constraints (core-only min shifts, gender hard balance), scoring transparency, audit logs.

@@ -6,6 +6,8 @@ import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { ExperienceLevel, Role } from "@prisma/client";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 interface TeamMember {
   id: string;
@@ -16,10 +18,6 @@ interface TeamMember {
   capabilities: Role[];
   isActive: boolean;
 }
-
-import { useState, useEffect } from "react";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
 
 export default function MembersPage() {
   const [members, setMembers] = useState<TeamMember[]>([]);

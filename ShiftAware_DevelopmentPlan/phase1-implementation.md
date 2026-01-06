@@ -14,6 +14,12 @@
     - phase1: algorithm supports preference matching, workload balance, experience distribution, gender balance (hard constraint), core shift coverage
     - phase1: all APIs include authentication checks, error handling, and audit logging
     - phase1: re-aligned UI/UX with calendar format using DayPilot Lite React (FR-001, FR-005)
+    - phase1: implemented modern sidebar and header navigation shell with fixed layout
+    - phase1: updated application theme to "Starlight Meadow" (light palette, warm neutrals)
+    - phase1: refactored dashboard UI with stats cards and upcoming event overview
+    - phase1: moved protected pages into (dashboard) route group for consistent layout management
+    - phase1: updated testing suite to include UI navigation and Phase 1 API endpoints
+    - phase1: applied rounded corner and shadow tokens from design system across all pages
     - phase1: re-implemented /preferences with a multi-select calendar interface and priority tracking
     - phase1: implemented /schedule with Day/Week views showing staff coverage and member assignments
     - phase1: implemented assignment detail modal surfacing algorithm rationales and scores (FR-004)
