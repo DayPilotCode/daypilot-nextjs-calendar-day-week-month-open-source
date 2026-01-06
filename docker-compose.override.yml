@@ -1,0 +1,40 @@
+services:
+  python-compute:
+    build:
+      target: development
+    volumes:
+      - ./services/python-compute/src:/app/src
+    develop:
+      watch:
+        - action: sync
+          path: ./services/python-compute/src
+          target: /app/src
+          ignore:
+            - __pycache__/
+            - "*.pyc"
+        - action: rebuild
+          path: ./services/python-compute/requirements.txt
+
+  nextjs-web:
+    build:
+      target: development
+    volumes:
+      - ./services/nextjs-web/src:/app/src
+      - ./services/nextjs-web/public:/app/public
+      - /app/node_modules
+    develop:
+      watch:
+        - action: sync
+          path: ./services/nextjs-web/src
+          target: /app/src
+          ignore:
+            - node_modules/
+            - ".next/"
+        - action: sync
+          path: ./services/nextjs-web/public
+          target: /app/public
+        - action: rebuild
+          path: ./services/nextjs-web/package.json
+        - action: rebuild
+          path: ./services/nextjs-web/package-lock.json
+
