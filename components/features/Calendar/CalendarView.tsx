@@ -34,7 +34,8 @@ const CalendarView = ({
 }: CalendarViewProps) => {
   const [calendar, setCalendar] = useState<DayPilot.Calendar>();
 
-  const [config] = useState<DayPilot.CalendarConfig>({
+  // Use useMemo to recalculate config when viewType changes
+  const config = useMemo<DayPilot.CalendarConfig>(() => ({
     viewType: viewType === "Day" ? "Day" : "Week",
     headerHeight: 40,
     cellHeight: 40,
@@ -111,7 +112,7 @@ const CalendarView = ({
         }
       }
     },
-  });
+  }), [viewType, showAssignments, selectedShiftIds, onShiftClick, onAssignmentClick]);
 
   // Clear calendar reference when switching to Grid view to prevent disposal errors
   useEffect(() => {
@@ -257,6 +258,7 @@ const CalendarView = ({
         <DayPilotCalendar
           key={`daypilot-${viewType}-${startDate}`}
           {...config}
+          viewType={viewType === "Day" ? "Day" : "Week"}
           events={events}
           controlRef={(ref) => {
             if (ref) {
