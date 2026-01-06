@@ -21,9 +21,9 @@ AuditLog N──1 User
 model TeamMember {
   id              String   @id @default(cuid())
   alias           String   @unique
-  avatarId        String
+  avatarId        String   // Unicode emoji or Emojitwo SVG filename
   experienceLevel ExperienceLevel
-  genderRole      String
+  genderRole      String   // e.g., FLINTA or M/NB for balance
   capabilities    Role[]
   isActive        Boolean  @default(true)
   
@@ -85,8 +85,10 @@ model Shift {
   type              ShiftType
   startTime         DateTime
   endTime           DateTime
+  durationMinutes   Int      // 360 for standard, 480-720 for executive
   priority          ShiftPriority @default(CORE)
   desirabilityScore Int      @default(3) // 1-5 scale
+  isTemplate        Boolean  @default(false) // For future drag/drop template use
   
   requiredRoles     ShiftRole[]
   capacity          Int      @default(2)
@@ -183,22 +185,22 @@ model EventConfig {
   eventId   String @unique
   event     Event  @relation(fields: [eventId], references: [id])
   
-  minShiftsPerPerson      Int  @default(2)
-  algorithmWeights        Json // Stores weight configuration
-  balanceThresholds       Json // Gender, experience thresholds
+  minShiftsPerPerson      Int  @default(2) // Applies to core event days only
+  algorithmWeights        Json // Stores weight configuration (gender balance is HARD constraint)
+  balanceThresholds       Json // Gender, experience thresholds (gender parity required)
   autoAssignUnfilled      Boolean @default(true)
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-// Example algorithmWeights JSON:
+// Example algorithmWeights JSON (gender balance is a hard constraint, not weighted):
 {
   "preferenceMatch": 0.35,
   "experienceBalance": 0.25,
-  "genderBalance": 0.20,
   "workloadFairness": 0.15,
-  "coreShiftCoverage": 0.05
+  "coreShiftCoverage": 0.05,
+  "genderBalance": "HARD_CONSTRAINT"
 }
 
 // Example balanceThresholds JSON:
@@ -305,32 +307,78 @@ model SystemConfig {
 
 ## Sample Data
 
-### TeamMembers
+### Sample Event Constants
 ```sql
-INSERT INTO TeamMember (alias, avatarId, experienceLevel, genderRole, capabilities) VALUES
-('Wolf', 'avatar_01', 'SENIOR', 'M', ['TEAM_MEMBER', 'SHIFT_LEAD']),
-('Eagle', 'avatar_02', 'INTERMEDIATE', 'F', ['TEAM_MEMBER']),
-('Bear', 'avatar_03', 'JUNIOR', 'M', ['TEAM_MEMBER']),
-('Hawk', 'avatar_04', 'SENIOR', 'F', ['TEAM_MEMBER', 'SHIFT_LEAD', 'EXECUTIVE']);
+-- Event: Starlight Meadow Festival 2026
+-- Dates: June 11 - July 8, 2026
+-- Core event: June 26-29, 2026 (Thu-Mon)
+-- Buffer: June 11-25 and June 30-July 8
+-- const EVENT_NAME = 'Starlight Meadow Festival 2026'
 ```
 
-### Shifts (Example Event)
+### TeamMembers (30, balanced 15/15, experience 10/10/10)
 ```sql
--- Thursday Buffer
-INSERT INTO Shift (eventId, type, startTime, endTime, priority, desirabilityScore)
-VALUES ('event_1', 'MOBILE_TEAM_1', '2025-06-12 18:00', '2025-06-12 22:00', 'BUFFER', 3);
+INSERT INTO TeamMember (alias, avatarId, experienceLevel, genderRole, capabilities) VALUES
+-- Juniors (10) M/NB vs FLINTA balanced
+('Bunny', '🐰', 'JUNIOR', 'FLINTA', ['TEAM_MEMBER']),
+('Otter', '🦦', 'JUNIOR', 'M_NB', ['TEAM_MEMBER']),
+('Chipmunk', '🐿️', 'JUNIOR', 'FLINTA', ['TEAM_MEMBER']),
+('Hedgehog', '🦔', 'JUNIOR', 'M_NB', ['TEAM_MEMBER']),
+('Squirrel', '🐿️', 'JUNIOR', 'FLINTA', ['TEAM_MEMBER']),
+('Robin', '🐦', 'JUNIOR', 'M_NB', ['TEAM_MEMBER']),
+('Finch', '🐦', 'JUNIOR', 'FLINTA', ['TEAM_MEMBER']),
+('Duckling', '🦆', 'JUNIOR', 'M_NB', ['TEAM_MEMBER']),
+('Fawn', '🦌', 'JUNIOR', 'FLINTA', ['TEAM_MEMBER']),
+('Kitten', '🐱', 'JUNIOR', 'M_NB', ['TEAM_MEMBER']),
+-- Intermediates (10)
+('Fox', '🦊', 'INTERMEDIATE', 'FLINTA', ['TEAM_MEMBER']),
+('Badger', '🦡', 'INTERMEDIATE', 'M_NB', ['TEAM_MEMBER']),
+('Raccoon', '🦝', 'INTERMEDIATE', 'FLINTA', ['TEAM_MEMBER']),
+('Panda', '🐼', 'INTERMEDIATE', 'M_NB', ['TEAM_MEMBER']),
+('Koala', '🐨', 'INTERMEDIATE', 'FLINTA', ['TEAM_MEMBER']),
+('Owl', '🦉', 'INTERMEDIATE', 'M_NB', ['TEAM_MEMBER']),
+('Peacock', '🦚', 'INTERMEDIATE', 'FLINTA', ['TEAM_MEMBER']),
+('Swan', '🦢', 'INTERMEDIATE', 'M_NB', ['TEAM_MEMBER']),
+('Deer', '🦌', 'INTERMEDIATE', 'FLINTA', ['TEAM_MEMBER']),
+('Lynx', '🐆', 'INTERMEDIATE', 'M_NB', ['TEAM_MEMBER']),
+-- Seniors (10) all shift leads; 5 exec-capable
+('Wolf', '🐺', 'SENIOR', 'M_NB', ['TEAM_MEMBER', 'SHIFT_LEAD', 'EXECUTIVE']),
+('Bear', '🐻', 'SENIOR', 'FLINTA', ['TEAM_MEMBER', 'SHIFT_LEAD']),
+('Eagle', '🦅', 'SENIOR', 'M_NB', ['TEAM_MEMBER', 'SHIFT_LEAD', 'EXECUTIVE']),
+('Hawk', '🦅', 'SENIOR', 'FLINTA', ['TEAM_MEMBER', 'SHIFT_LEAD']),
+('Lion', '🦁', 'SENIOR', 'M_NB', ['TEAM_MEMBER', 'SHIFT_LEAD', 'EXECUTIVE']),
+('Tiger', '🐯', 'SENIOR', 'FLINTA', ['TEAM_MEMBER', 'SHIFT_LEAD', 'EXECUTIVE']),
+('Falcon', '🦅', 'SENIOR', 'M_NB', ['TEAM_MEMBER', 'SHIFT_LEAD']),
+('Leopard', '🐆', 'SENIOR', 'FLINTA', ['TEAM_MEMBER', 'SHIFT_LEAD']),
+('Panther', '🐆', 'SENIOR', 'M_NB', ['TEAM_MEMBER', 'SHIFT_LEAD', 'EXECUTIVE']),
+('Jaguar', '🐆', 'SENIOR', 'FLINTA', ['TEAM_MEMBER', 'SHIFT_LEAD', 'EXECUTIVE']);
+```
 
--- Friday Core (desirable)
-INSERT INTO Shift (eventId, type, startTime, endTime, priority, desirabilityScore)
-VALUES ('event_1', 'STATIONARY', '2025-06-13 14:00', '2025-06-13 18:00', 'CORE', 4);
+### Shifts (Starlight Meadow Festival 2026)
+```sql
+-- Buffer: Thursday June 11, 18:00-00:00 (6h), desirability=3
+INSERT INTO Shift (eventId, type, startTime, endTime, durationMinutes, priority, desirabilityScore, isTemplate)
+VALUES ('event_starlight_2026', 'MOBILE_TEAM_1', '2026-06-11 18:00', '2026-06-12 00:00', 360, 'BUFFER', 3, false);
 
--- Sunday Late (less desirable)
-INSERT INTO Shift (eventId, type, startTime, endTime, priority, desirabilityScore)
-VALUES ('event_1', 'MOBILE_TEAM_2', '2025-06-15 22:00', '2025-06-16 02:00', 'CORE', 1);
+-- Core: Friday June 26, 08:00-14:00 (6h), desirability=4
+INSERT INTO Shift (eventId, type, startTime, endTime, durationMinutes, priority, desirabilityScore, isTemplate)
+VALUES ('event_starlight_2026', 'STATIONARY', '2026-06-26 08:00', '2026-06-26 14:00', 360, 'CORE', 4, false);
 
--- Monday Midday (least desirable)
-INSERT INTO Shift (eventId, type, startTime, endTime, priority, desirabilityScore)
-VALUES ('event_1', 'EXECUTIVE', '2025-06-16 10:00', '2025-06-16 12:00', 'CORE', 2);
+-- Core: Saturday June 27 night, 22:00-04:00 (6h), desirability=1
+INSERT INTO Shift (eventId, type, startTime, endTime, durationMinutes, priority, desirabilityScore, isTemplate)
+VALUES ('event_starlight_2026', 'MOBILE_TEAM_2', '2026-06-27 22:00', '2026-06-28 04:00', 360, 'CORE', 1, false);
+
+-- Core: Sunday June 28 day, 14:00-20:00 (6h), desirability=2
+INSERT INTO Shift (eventId, type, startTime, endTime, durationMinutes, priority, desirabilityScore, isTemplate)
+VALUES ('event_starlight_2026', 'MOBILE_TEAM_1', '2026-06-28 14:00', '2026-06-28 20:00', 360, 'CORE', 2, false);
+
+-- Core: Monday June 29 morning, 06:00-12:00 (6h), desirability=1
+INSERT INTO Shift (eventId, type, startTime, endTime, durationMinutes, priority, desirabilityScore, isTemplate)
+VALUES ('event_starlight_2026', 'STATIONARY', '2026-06-29 06:00', '2026-06-29 12:00', 360, 'CORE', 1, false);
+
+-- Executive: June 27, 08:00-20:00 (12h), desirability=3
+INSERT INTO Shift (eventId, type, startTime, endTime, durationMinutes, priority, desirabilityScore, isTemplate)
+VALUES ('event_starlight_2026', 'EXECUTIVE', '2026-06-27 08:00', '2026-06-27 20:00', 720, 'CORE', 3, false);
 ```
 
 ---
@@ -432,7 +480,10 @@ ORDER BY s.startTime;
 
 ### Development
 ```env
-DATABASE_URL="postgresql://user:pass@localhost:5432/shiftaware_dev"
+DATABASE_URL="postgresql://user:pass@localhost:45432/shiftaware_dev"
+ADMIN_PASSWORD_HASH="<bcrypt_hash>"
+SESSION_SECRET="<random_string>"
+STORAGE_BUCKET_URL="<cloud_bucket_url>"
 ```
 
 ### Production
@@ -441,6 +492,9 @@ DATABASE_URL="postgresql://user:pass@postgres:5432/shiftaware_prod"
 DATABASE_POOL_MIN=2
 DATABASE_POOL_MAX=10
 DATABASE_CONNECTION_TIMEOUT=10000
+ADMIN_PASSWORD_HASH="<bcrypt_hash>"
+SESSION_SECRET="<random_string>"
+STORAGE_BUCKET_URL="<cloud_bucket_url>"
 ```
 
 ### Connection Pooling

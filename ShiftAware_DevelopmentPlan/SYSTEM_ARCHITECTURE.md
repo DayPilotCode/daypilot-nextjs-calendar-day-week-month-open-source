@@ -257,6 +257,7 @@ User → Export button → Fetch assignment data (API)
 │  - Check min shifts per person possible                 │
 │  - Verify shift capacities achievable                   │
 │  - Validate role requirements can be met                │
+│  - Enforce gender balance as a hard constraint (50:50)  │
 └─────────────────────────────────────────────────────────┘
                     ▼
 ┌─────────────────────────────────────────────────────────┐
@@ -308,7 +309,6 @@ function scoreAssignment(
     preference: calculatePreferenceScore(person, shift),
     workload: calculateWorkloadScore(person, currentState),
     experience: calculateExperienceScore(person, shift, currentState),
-    gender: calculateGenderScore(person, shift, currentState),
     desirability: calculateDesirabilityScore(person, currentState)
   };
   
@@ -316,7 +316,6 @@ function scoreAssignment(
     scores.preference * weights.preferenceMatch +
     scores.workload * weights.workloadFairness +
     scores.experience * weights.experienceBalance +
-    scores.gender * weights.genderBalance +
     scores.desirability * 0.1;
   
   return { overall: weighted, breakdown: scores };
@@ -366,6 +365,13 @@ function scoreAssignment(
 ---
 
 ## Deployment Architecture
+
+### Environment Configuration (placeholders)
+- `DATABASE_URL` (Postgres connection)
+- `ADMIN_PASSWORD_HASH` (bcrypt)
+- `SESSION_SECRET`
+- `STORAGE_BUCKET_URL` (for PDF exports)
+- Host port palette (host→container): app `43000→3000`, postgres `45432→5432`, optional python `43010→8000`
 
 ### Port Palette (host → container)
 | Service | Host Port | Container Port | Notes |
@@ -454,17 +460,16 @@ volumes:
 
 ### Production Deployment
 
-**Option 1: Docker Compose (Simple)**
-- Single server deployment
-- Docker Compose for orchestration
-- Nginx reverse proxy for HTTPS
-- Automated backups via cron
-
-**Option 2: Cloud (Scalable)**
-- AWS ECS / GCP Cloud Run / Azure Container Instances
+**Cloud-hosted container (target)**
+- Run app container on ECS/Cloud Run/ACI
 - Managed PostgreSQL (RDS/Cloud SQL)
-- Load balancer with SSL termination
-- Automated scaling (if needed)
+- Object storage for exports (S3/Cloud Storage)
+- HTTPS via managed LB/ingress
+- Backups via managed DB + bucket lifecycle
+
+**Simple Compose (alt)**
+- Single host with Nginx reverse proxy
+- Cron-based backups to object storage
 
 ---
 

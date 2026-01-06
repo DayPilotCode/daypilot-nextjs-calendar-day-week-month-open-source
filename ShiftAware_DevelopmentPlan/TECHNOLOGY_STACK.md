@@ -81,6 +81,11 @@ theme: {
 - Minimal attack surface
 - Easy to implement and audit
 
+**Configuration:**
+- Password hash stored via env (`ADMIN_PASSWORD_HASH`)
+- Admin can change password via settings UI (writes new hash)
+- Session timeout 60 minutes (configurable)
+
 **NOT using:**
 - NextAuth.js: Overengineered for single password
 - Clerk/Auth0: External dependencies
@@ -96,6 +101,11 @@ theme: {
 ---
 
 ## Supporting Libraries
+
+### Avatar System
+- Primary: Native Unicode emoji (cute animal set)
+- Fallback: Emojitwo SVG (CC-BY 4.0, https://emojitwo.github.io/)
+- Attribution required when using Emojitwo assets
 
 ### PDF Generation: **react-pdf/renderer** or **jsPDF**
 - Client-side PDF generation
@@ -203,11 +213,13 @@ FROM node:20-alpine AS runner
 ### Services:
 1. **Next.js App**: Port 3000
 2. **PostgreSQL**: Port 5432 (internal)
+3. **Object Storage**: Cloud bucket for exports (S3/Cloud Storage)
 
 ### Environment Configuration:
 - `.env.local`: Local development
 - `.env.production`: Production secrets
 - Docker secrets for sensitive data
+- Key vars: `DATABASE_URL`, `ADMIN_PASSWORD_HASH`, `SESSION_SECRET`, `STORAGE_BUCKET_URL`
 
 ---
 

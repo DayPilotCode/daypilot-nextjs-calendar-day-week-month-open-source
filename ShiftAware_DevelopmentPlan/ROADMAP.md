@@ -1,7 +1,9 @@
 # Development Roadmap
 
 ## Timeline Overview
-**Total Duration:** 5-6 weeks (single developer)
+**Total Duration:** ~6 weeks (single developer)
+**Start:** Early January 2026
+**Target MVP:** February 28, 2026
 **Phases:** 4 phases with iterative testing
 
 ---
@@ -21,7 +23,7 @@
 ### Database Setup (Days 3-4)
 - [ ] Create Prisma schema
 - [ ] Run initial migration
-- [ ] Seed development data
+- [ ] Seed development data (Starlight Meadow Festival 2026: June 11-July 8, core June 26-29)
 - [ ] Test database connections
 - [ ] Setup backup strategy
 
@@ -95,6 +97,7 @@
 - [ ] Balance metrics display
 - [ ] Filtering capabilities
 - [ ] Responsive design implementation
+- [ ] Enhanced shift editor with drag/drop (P2, future enhancement)
 
 ### PDF Export (Days 4-5)
 - [ ] PDF generation library integration

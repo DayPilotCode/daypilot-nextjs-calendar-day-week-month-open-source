@@ -35,9 +35,15 @@ As an administrator, I need to define shift types, times, and team compositions.
   - 2x Mobile teams (2 people each)
   - 1x Stationary team (2 people, 1 is shift lead)
   - 1x Executive shift
+- Event period: June 11-July 8, 2026 (buffer + core)
+- Core event days: Thursday-Monday, June 26-29 (min-shift rules apply only to core)
+- Buffer days are excluded from minimum shift requirements
 - Set shift times (Thursday to Monday midday + buffer days)
 - Mark core event shifts vs. buffer shifts
 - Define shift desirability ratings
+- Shift duration: Standard 6h; Executive 8-12h
+- Optional 15-minute overlap (configurable/future)
+- Desirability guidance: Night=1-2, Sunday=2, Monday=1
 
 ### Data Model
 ```typescript
@@ -49,10 +55,12 @@ interface Shift {
   type: ShiftType
   startTime: DateTime
   endTime: DateTime
+  durationMinutes: number // 360 standard, 480-720 executive
   requiredRoles: ShiftRole[]
   capacity: number
   priority: 'core' | 'buffer'
   desirabilityScore: number // 1-5 scale
+  isTemplate?: boolean // future drag/drop templates
 }
 ```
 
@@ -69,18 +77,23 @@ As an administrator, I need to manage team member profiles with experience and d
 - Pseudonymized identity (alias only)
 - Profile attributes:
   - Experience level (junior, intermediate, senior)
-  - Gender role (for balance constraints)
+  - Gender role (for balance constraints, incl. FLINTA representation)
   - Shift role capabilities
-  - Avatar assignment
+  - Avatar assignment (Unicode emoji cute animals; Emojitwo SVG fallback)
 - Manual profile editing by admin only
 - Secure alias mapping (separate from main DB)
+
+**Avatar examples (emoji first, Emojitwo SVG fallback):**
+🐰 Bunny, 🦦 Otter, 🐿️ Chipmunk, 🦔 Hedgehog, 🐦 Robin, 🦆 Duckling, 🦌 Fawn, 🐱 Kitten  
+🦊 Fox, 🦡 Badger, 🦝 Raccoon, 🐼 Panda, 🐨 Koala, 🦉 Owl, 🦚 Peacock, 🦢 Swan, 🦌 Deer, 🐆 Lynx  
+🐺 Wolf, 🐻 Bear, 🦅 Eagle, 🦅 Hawk, 🦁 Lion, 🐯 Tiger, 🦅 Falcon, 🐆 Leopard, 🐆 Panther, 🐆 Jaguar
 
 ### Data Model
 ```typescript
 interface TeamMember {
   id: string
   alias: string // e.g., "Wolf", "Eagle"
-  avatarId: string
+  avatarId: string // Unicode emoji or Emojitwo SVG filename
   experienceLevel: 'junior' | 'intermediate' | 'senior'
   genderRole: string // For balance only
   capabilities: ShiftRole[]
@@ -100,12 +113,13 @@ As an administrator, I want the system to optimally assign shifts based on prefe
 ### Algorithm Requirements
 
 #### Constraints (Hard)
-1. Minimum 2 shifts per person
+1. Minimum 2 shifts per person (core event days only: June 26-29)
 2. Each shift filled to capacity
 3. Shift lead qualification required
 4. No person in overlapping shifts
 5. Experience balance per team (mix of levels)
-6. Gender balance per team
+6. Gender balance per team (complete 50:50 parity; hard constraint)
+7. Buffer period shifts do not count toward minimum shift rule
 
 #### Optimization Goals (Soft)
 1. Maximize preference satisfaction
@@ -113,12 +127,11 @@ As an administrator, I want the system to optimally assign shifts based on prefe
 3. Balance workload across team members
 4. Prioritize core event coverage
 
-#### Scoring System
+#### Scoring System (gender is validated as hard constraint, not weighted)
 ```typescript
 interface AssignmentScore {
   preferenceMatch: number    // 0-100 (higher = better)
   experienceBalance: number  // 0-100 (100 = perfect mix)
-  genderBalance: number      // 0-100 (100 = balanced)
   workloadFairness: number   // 0-100 (100 = equal distribution)
   coreShiftCoverage: number  // 0-100 (100 = all filled)
   overall: number           // Weighted average
@@ -130,7 +143,6 @@ interface AssignmentScore {
 const weights = {
   preferenceMatch: 0.35,
   experienceBalance: 0.25,
-  genderBalance: 0.20,
   workloadFairness: 0.15,
   coreShiftCoverage: 0.05
 }
@@ -267,7 +279,7 @@ As an administrator, I need to convert pseudonyms to real names for on-site prin
 - Password-protected PDF option
 - Clear warning about PII handling
 
-### Priority: **P1 (High)**
+### Priority: **P2 (Medium)** (external/offline tool; not in MVP)
 
 ---
 
@@ -406,7 +418,7 @@ As an administrator, I want to quickly identify unfilled or understaffed shifts.
 | FR-005 | P0 | Medium | FR-004 | 3 days |
 | FR-006 | P1 | Medium | FR-004, FR-009 | 2 days |
 | FR-007 | P1 | Medium | FR-005 | 2 days |
-| FR-008 | P1 | Low | FR-007 | 1 day |
+| FR-008 | P2 | Low | FR-007 | 1 day |
 | FR-009 | P1 | Medium | - | 2 days |
 | FR-010 | P0 | Low | - | 1 day |
 | FR-011 | P2 | Low | FR-004 | 1 day |

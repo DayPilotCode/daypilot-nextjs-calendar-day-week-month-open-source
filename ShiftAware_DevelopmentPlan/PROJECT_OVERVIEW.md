@@ -48,6 +48,7 @@ A lightweight, privacy-focused shift management tool for coordinating a rotating
 4. Integration with external calendar systems
 5. Advanced analytics/reporting
 6. Automated notifications
+7. Pseudonym-to-name mapping storage/management (handled externally)
 
 ### Phases
 **Phase 1**: Core functionality (preference entry, assignment algorithm, display)
@@ -99,6 +100,7 @@ A lightweight, privacy-focused shift management tool for coordinating a rotating
 - Schedule fairness score: >80% satisfaction
 - System availability: >95%
 - Zero PII leaks
+- Production target: February 28, 2026
 
 ---
 
