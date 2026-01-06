@@ -7,7 +7,9 @@ function isPublicRoute(pathname: string): boolean {
   return (
     pathname === "/login" ||
     pathname === "/api/auth/login" ||
-    pathname === "/api/health"
+    pathname === "/api/health" ||
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/api/auth")
   );
 }
 
