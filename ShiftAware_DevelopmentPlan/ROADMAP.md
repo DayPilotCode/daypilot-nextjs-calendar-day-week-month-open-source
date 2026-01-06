@@ -1,0 +1,402 @@
+# Development Roadmap
+
+## Timeline Overview
+**Total Duration:** 5-6 weeks (single developer)
+**Phases:** 4 phases with iterative testing
+
+---
+
+## Phase 0: Project Setup (Week 1)
+
+### Infrastructure Setup (Days 1-2)
+- [ ] Initialize Next.js 14 project with TypeScript
+- [ ] Configure Tailwind CSS v4
+- [ ] Setup Prisma with PostgreSQL
+- [ ] Configure ESLint, Prettier
+- [ ] Setup Docker + Docker Compose
+- [ ] Initialize Git repository
+- [ ] Configure environment variables
+
+### Database Setup (Days 3-4)
+- [ ] Create Prisma schema
+- [ ] Run initial migration
+- [ ] Seed development data
+- [ ] Test database connections
+- [ ] Setup backup strategy
+
+### Authentication (Day 5)
+- [ ] Create auth middleware
+- [ ] Implement login page
+- [ ] Setup session management
+- [ ] Test authentication flow
+
+**Deliverable:** Working development environment with basic auth
+
+---
+
+## Phase 1: Core Functionality (Weeks 2-3)
+
+### Week 2: Data Management
+
+#### Team Member Management (Days 1-2)
+- [ ] API: CRUD operations for team members
+- [ ] UI: Member list and create form
+- [ ] Avatar assignment system
+- [ ] Experience level configuration
+- [ ] Validation and error handling
+
+#### Shift Configuration (Days 3-4)
+- [ ] API: CRUD operations for shifts
+- [ ] UI: Shift creation form
+- [ ] Shift type and role configuration
+- [ ] Desirability scoring system
+- [ ] Event period setup
+
+#### Preference Entry (Day 5)
+- [ ] API: Preference submission endpoint
+- [ ] UI: Calendar-based shift selector
+- [ ] Multi-select functionality
+- [ ] Preference validation (min shifts)
+- [ ] Submission confirmation
+
+**Week 2 Deliverable:** Users can create profiles, configure shifts, enter preferences
+
+### Week 3: Assignment Algorithm
+
+#### Algorithm Core (Days 1-3)
+- [ ] Scoring functions implementation
+  - Preference matching
+  - Workload balance
+  - Experience distribution
+  - Gender balance
+- [ ] Constraint validation
+- [ ] Optimization logic
+- [ ] Random assignment fallback
+- [ ] Unit tests for algorithm
+
+#### Algorithm Integration (Days 4-5)
+- [ ] API: Assignment execution endpoint
+- [ ] UI: Admin trigger button
+- [ ] Results visualization
+- [ ] Explanation generation
+- [ ] Error handling
+
+**Week 3 Deliverable:** Working assignment algorithm with basic UI
+
+---
+
+## Phase 2: Visualization & Export (Week 4)
+
+### Schedule Visualization (Days 1-3)
+- [ ] Calendar component (day/week views)
+- [ ] Shift card components
+- [ ] Coverage indicators
+- [ ] Balance metrics display
+- [ ] Filtering capabilities
+- [ ] Responsive design implementation
+
+### PDF Export (Days 4-5)
+- [ ] PDF generation library integration
+- [ ] Schedule export template
+- [ ] Individual assignment export
+- [ ] Export options UI
+- [ ] Client-side PDF generation
+- [ ] Download functionality
+
+**Week 4 Deliverable:** Complete schedule visualization and PDF export
+
+---
+
+## Phase 3: Admin Features & Polish (Week 5)
+
+### Manual Adjustments (Days 1-2)
+- [ ] Swap interface UI
+- [ ] Swap validation logic
+- [ ] API: Manual swap endpoint
+- [ ] Swap confirmation flow
+- [ ] Audit logging for swaps
+
+### Audit Trail (Days 3-4)
+- [ ] Audit log viewer UI
+- [ ] Filtering and search
+- [ ] Export audit logs
+- [ ] Action explanations
+- [ ] Timestamp formatting
+
+### Coverage Dashboard (Day 5)
+- [ ] Gap identification logic
+- [ ] Coverage indicators
+- [ ] Quick action buttons
+- [ ] Balance metric calculations
+- [ ] Visual status indicators
+
+**Week 5 Deliverable:** Full admin toolkit and audit capabilities
+
+---
+
+## Phase 4: Testing & Deployment (Week 6)
+
+### Testing (Days 1-3)
+- [ ] Unit tests (70%+ coverage)
+- [ ] Integration tests (API endpoints)
+- [ ] E2E tests (critical paths)
+- [ ] Algorithm validation tests
+- [ ] Performance testing
+- [ ] Security audit
+- [ ] Browser compatibility testing
+
+### Documentation (Day 4)
+- [ ] API documentation
+- [ ] Deployment guide
+- [ ] User manual
+- [ ] Admin guide
+- [ ] Troubleshooting guide
+- [ ] README updates
+
+### Deployment (Day 5)
+- [ ] Production Dockerfile
+- [ ] Docker Compose production config
+- [ ] Environment configuration
+- [ ] Database migration strategy
+- [ ] Backup automation
+- [ ] Health check endpoint
+- [ ] GitHub Container Registry setup
+
+**Week 6 Deliverable:** Production-ready application with documentation
+
+---
+
+## Task Breakdown by Priority
+
+### P0 - Critical (Must Have for MVP)
+1. Authentication system
+2. Team member management
+3. Shift configuration
+4. Preference entry
+5. Assignment algorithm
+6. Basic schedule view
+7. Database schema & migrations
+
+### P1 - High (Essential for Usability)
+1. Calendar visualization
+2. PDF export
+3. Manual swaps
+4. Audit trail
+5. Coverage dashboard
+6. Responsive design
+
+### P2 - Medium (Nice to Have)
+1. Advanced filtering
+2. Configuration UI
+3. Audit log export
+4. Performance optimizations
+
+### P3 - Low (Future Enhancements)
+1. Email notifications
+2. Real-time updates
+3. Advanced analytics
+4. Multi-language support
+
+---
+
+## Development Guidelines
+
+### Daily Workflow
+1. **Morning:** Review previous day, plan tasks
+2. **Development:** Focus on one feature at a time
+3. **Testing:** Write tests alongside code
+4. **Commit:** Atomic commits with conventional messages
+5. **Review:** End-of-day code review and documentation
+
+### Code Quality Standards
+- **TypeScript:** Strict mode enabled
+- **Testing:** >70% code coverage
+- **Linting:** Zero ESLint errors
+- **Formatting:** Prettier auto-format on save
+- **Documentation:** JSDoc for complex functions
+- **Performance:** Lighthouse score >90
+
+### Git Workflow
+```bash
+main (protected)
+  └── develop
+       ├── feature/auth
+       ├── feature/algorithm
+       └── feature/export
+```
+
+**Branch Naming:**
+- `feature/` - New features
+- `fix/` - Bug fixes
+- `refactor/` - Code improvements
+- `docs/` - Documentation
+
+**Commit Messages:**
+```
+feat(auth): implement session management
+fix(algorithm): correct experience balance calculation
+docs(api): add endpoint documentation
+test(algorithm): add constraint validation tests
+```
+
+---
+
+## Testing Strategy
+
+### Unit Tests (Vitest)
+```javascript
+// Algorithm functions
+test('calculatePreferenceScore returns correct value', () => {
+  const score = calculatePreferenceScore(member, shift);
+  expect(score).toBeGreaterThan(0);
+});
+
+// Utility functions
+test('validateShiftOverlap detects conflicts', () => {
+  expect(validateShiftOverlap(shift1, shift2)).toBe(true);
+});
+```
+
+### Integration Tests (Vitest + Supertest)
+```javascript
+// API endpoints
+test('POST /api/preferences creates preference', async () => {
+  const response = await request(app)
+    .post('/api/preferences')
+    .send({ shiftId, priority: 1 })
+    .expect(201);
+  expect(response.body.id).toBeDefined();
+});
+```
+
+### E2E Tests (Playwright)
+```javascript
+// Critical user flows
+test('user can submit preferences', async ({ page }) => {
+  await page.goto('/login');
+  await page.fill('[name="password"]', testPassword);
+  await page.click('button[type="submit"]');
+  await page.goto('/preferences');
+  await page.click('[data-shift-id="shift1"]');
+  await page.click('button:has-text("Submit")');
+  await expect(page.locator('.success-message')).toBeVisible();
+});
+```
+
+---
+
+## Risk Mitigation
+
+| Risk | Impact | Mitigation Strategy | Timeline |
+|------|--------|---------------------|----------|
+| Algorithm complexity | High | Iterative development, unit tests | Week 3 |
+| UI/UX not intuitive | Medium | User testing with stakeholders | Week 4 |
+| Performance issues | Medium | Profiling, optimization phase | Week 5 |
+| Deployment problems | High | Thorough testing, staging env | Week 6 |
+| Scope creep | Medium | Strict P0 focus, defer P2/P3 | Ongoing |
+
+---
+
+## Success Criteria
+
+### MVP Definition
+- ✓ Users can enter shift preferences
+- ✓ Algorithm assigns shifts fairly
+- ✓ Schedule is viewable and exportable
+- ✓ Admin can make manual adjustments
+- ✓ All actions are audited
+- ✓ Application is deployable
+
+### Performance Targets
+- Page load: <2s
+- Algorithm execution: <10s (35 people)
+- PDF generation: <5s
+- API response time: <500ms (p95)
+
+### Quality Targets
+- Test coverage: >70%
+- Zero critical security issues
+- Lighthouse score: >90
+- Accessibility: WCAG 2.1 AA
+- Browser support: Chrome, Firefox, Safari (latest 2 versions)
+
+---
+
+## Post-Launch Plan
+
+### Week 7-8: Monitoring & Fixes
+- Monitor error logs
+- Gather user feedback
+- Fix critical bugs
+- Performance tuning
+- Documentation improvements
+
+### Future Iterations
+- **v1.1:** Advanced features (P2 items)
+- **v1.2:** User experience improvements
+- **v2.0:** Multi-event support, notifications
+- **v3.0:** Mobile app, integrations
+
+---
+
+## Resource Requirements
+
+### Development Environment
+- Node.js 20+
+- PostgreSQL 16+
+- Docker Desktop
+- IDE (VS Code recommended)
+- 8GB RAM minimum
+- Git
+
+### Production Environment
+- 2 vCPU
+- 4GB RAM
+- 20GB storage
+- Docker runtime
+- PostgreSQL database
+- HTTPS certificate
+
+### External Services (Optional)
+- GitHub (version control)
+- GitHub Container Registry (image hosting)
+- Sentry (error monitoring)
+- Backup storage (S3/equivalent)
+
+---
+
+## Communication Plan
+
+### Stakeholder Updates
+- **Weekly:** Progress report with completed features
+- **Mid-phase:** Demo of working features
+- **Phase end:** Deliverable review and feedback
+
+### Documentation Updates
+- **Daily:** Update task status
+- **Weekly:** Update technical docs
+- **Phase end:** Update user documentation
+
+### Decision Log
+- Maintain decisions in `DECISIONS.md`
+- Document alternatives considered
+- Rationale for each choice
+- Date and context
+
+---
+
+## Next Steps
+
+1. **Review this roadmap** with stakeholders
+2. **Setup development environment** (Phase 0, Week 1)
+3. **Create GitHub repository**
+4. **Initialize project structure**
+5. **Begin Phase 0 tasks**
+6. **Schedule weekly check-ins**
+
+**Questions to Resolve:**
+- Confirm event dates for testing data
+- Provide sample team member list (pseudonyms)
+- Decide on avatar set
+- Set deployment target date
+- Identify test users for feedback
