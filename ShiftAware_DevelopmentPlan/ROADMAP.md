@@ -95,22 +95,23 @@
 ## Phase 2: Visualization & Export (Week 4) [in_progress]
 
 ### Schedule Visualization (Days 1-3)
-- [ ] Enhanced Calendar component (day/week/month views)
+- [x] Enhanced Calendar component (day/week/month views)
 - [ ] Advanced shift card interactions
-- [ ] Dynamic coverage indicators
-- [ ] Real-time balance metrics
-- [ ] Advanced filtering (by role, member, status)
+- [x] Dynamic coverage indicators
+- [x] Real-time balance metrics
+- [x] Advanced filtering (by role, member, status)
 - [ ] Responsive mobile view for schedule
-- [ ] Persistent view preferences
+- [x] Persistent view preferences
 
 ### PDF Export (Days 4-5)
-- [ ] Advanced PDF templates (Landscape/Portrait)
-- [ ] Member-specific schedule export
+- [x] Advanced PDF templates (Landscape/Portrait)
+- [x] Member-specific schedule export
 - [ ] Export with pseudonym mapping toggle
 - [ ] Batch export functionality
 - [ ] Print-optimized CSS for schedule view
 
-**Week 4 Deliverable:** Enhanced schedule visualization and production-ready PDF export
+**Week 4 Deliverable:** Enhanced schedule visualization and production-ready PDF export  
+**Current status:** Calendar (Day/Week/Month), coverage badges, filters, metrics, persistent view, member-scope PDF with pseudonym map; remaining: toggle for pseudonym map, batch export, print CSS, mobile polish, advanced card interactions.
 
 ---
 

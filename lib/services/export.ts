@@ -28,6 +28,11 @@ export function exportScheduleToPDF(shifts: any[], options: ExportOptions = {}) 
   const doc = new jsPDF({ orientation });
   const eventName = title || filteredShifts[0]?.event?.name || "ShiftAware Schedule";
   const timestamp = format(new Date(), "yyyy-MM-dd HH:mm:ss");
+  const memberAlias =
+    memberId &&
+    filteredShifts
+      .flatMap((s: any) => s.assignments || [])
+      .find((a: any) => a.teamMember?.id === memberId || a.teamMemberId === memberId)?.teamMember?.alias;
 
   // Title
   doc.setFontSize(18);
@@ -36,13 +41,16 @@ export function exportScheduleToPDF(shifts: any[], options: ExportOptions = {}) 
   doc.setFontSize(10);
   doc.setTextColor(100);
   doc.text(`Generated on: ${timestamp}`, 14, 28);
+  if (memberId) {
+    doc.text(`Scope: Member ${memberAlias ? `"${memberAlias}"` : memberId}`, 14, 32);
+  }
 
   // Coverage summary
   const totalCapacity = filteredShifts.reduce((acc: number, shift: any) => acc + (shift.capacity || 0), 0);
   const totalFilled = filteredShifts.reduce((acc: number, shift: any) => acc + ((shift.assignments || []).length || 0), 0);
   const coverage = totalCapacity === 0 ? 0 : Math.round((totalFilled / totalCapacity) * 100);
   doc.setFontSize(11);
-  doc.text(`Coverage: ${coverage}% (${totalFilled}/${totalCapacity})`, 14, 34);
+  doc.text(`Coverage: ${coverage}% (${totalFilled}/${totalCapacity})`, 14, memberId ? 38 : 34);
 
   // Table Data
   const tableData = filteredShifts
