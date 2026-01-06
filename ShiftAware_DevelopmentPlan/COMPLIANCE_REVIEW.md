@@ -64,3 +64,15 @@ Log of repository adherence vs. development plan. Append new entries per review.
 - Export flow upgraded: PDF export supports landscape/portrait, member-specific scope, and pseudonym map sheet; coverage summary added (FR-007).
 - API parity: `/api/shifts` now returns assignments (with team member details) to power visualization/export without stale data.
 - Remaining gaps: drag/drop swap UI (FR-006) and predictive gap analysis (FR-012) still outstanding; PDF templates could be further themed beyond current table layout; audit viewer remains pending.
+
+## 2026-01-06T20:15:00Z
+- **Critical Review of Phase 2 Proliferation**: Current implementation has diverged from the ground truth in several key areas.
+- **Feature Creep (Month View)**: The schedule implementation includes a **Month View** which is not required by `FR-005` and has been explicitly flagged by the user as unnecessary.
+- **Missing Requirement (Grid View)**: `FR-005` specifically mandates a **Grid View** (Matrix of people x shifts), which is currently missing from the implementation. The current `Month View` should be replaced by this `Grid View`.
+- **Roadmap Inconsistency**: `ROADMAP.md` (Phase 2) incorrectly listed "day/week/month" views, leading to implementer confusion. This contradicts the source-of-truth `FEATURE_REQUIREMENTS.md`.
+- **UI/UX Bloat**: Current design features gradients, complex shadows, and "high-end" styling that deviates from the "Clean, minimal interface" and "Lightweight" philosophy defined in the `PROJECT_OVERVIEW` and `SYSTEM_ARCHITECTURE`.
+- **Adherence Plan**:
+  - **Prune & Replace**: Remove `Month` view from the schedule and calendar components.
+  - **Prioritize Grid View**: Implement the `Grid View` matrix as required by `FR-005`.
+  - **Design Confirmation**: The current high-end UI/UX (gradients, shadows, refined aesthetics) is intentional and confirmed by the user. The `ShiftAware_DevelopmentPlan` has been updated to reflect this modern design paradigm.
+  - **Correct Roadmap**: Update `ROADMAP.md` to reflect `day/week/grid` views to ensure future consistency.

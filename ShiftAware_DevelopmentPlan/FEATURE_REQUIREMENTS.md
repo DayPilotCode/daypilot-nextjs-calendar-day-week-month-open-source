@@ -191,9 +191,9 @@ As a user, I want to see the shift schedule in an intuitive calendar format.
   - Responsive design (mobile/tablet/desktop)
 
 ### Design Principles (Tailwind)
-- Clean, minimal interface
+- Modern, high-end interface with refined aesthetics
+- Rich visual hierarchy using gradients and soft shadows
 - Color-coded shift types
-- Clear visual hierarchy
 - Intuitive navigation
 - Fast rendering (<1s)
 
