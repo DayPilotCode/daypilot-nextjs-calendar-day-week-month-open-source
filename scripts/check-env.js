@@ -39,50 +39,26 @@ const env = fs.existsSync(envLocalPath)
 console.log('\nEnvironment Variables Check:');
 console.log('Using:', fs.existsSync(envLocalPath) ? '.env.local' : fs.existsSync(envPath) ? '.env' : 'none found');
 
-const adminHash = env.ADMIN_PASSWORD_HASH?.trim();
-const sessionSecret = env.SESSION_SECRET?.trim();
+const adminPassword = env.ADMIN_PASSWORD?.trim();
+const sessionTimeout = env.SESSION_TIMEOUT_MINUTES?.trim();
 const dbUrl = env.DATABASE_URL?.trim();
 
-console.log('\nADMIN_PASSWORD_HASH:');
-console.log('  exists:', !!adminHash);
-console.log('  length:', adminHash?.length || 0);
-console.log('  prefix:', adminHash ? adminHash.substring(0, 12) + '...' : 'NOT SET');
-console.log('  valid bcrypt:', adminHash ? adminHash.startsWith('$2') && adminHash.length === 60 : false);
-
-// Check if hash is quoted in file
-if (fs.existsSync(envLocalPath)) {
-  const fileContent = fs.readFileSync(envLocalPath, 'utf-8');
-  const hashLine = fileContent.split('\n').find(line => line.trim().startsWith('ADMIN_PASSWORD_HASH='));
-  if (hashLine) {
-    const isQuoted = (hashLine.includes('ADMIN_PASSWORD_HASH="') || hashLine.includes("ADMIN_PASSWORD_HASH='"));
-    console.log('  quoted in file:', isQuoted);
-    if (!isQuoted && adminHash && adminHash.length < 60) {
-      console.log('  ⚠ WARNING: Hash appears unquoted and may be truncated!');
-      console.log('  Fix: Add quotes: ADMIN_PASSWORD_HASH="' + adminHash + '..."');
-    }
-  }
-} else if (fs.existsSync(envPath)) {
-  const fileContent = fs.readFileSync(envPath, 'utf-8');
-  const hashLine = fileContent.split('\n').find(line => line.trim().startsWith('ADMIN_PASSWORD_HASH='));
-  if (hashLine) {
-    const isQuoted = (hashLine.includes('ADMIN_PASSWORD_HASH="') || hashLine.includes("ADMIN_PASSWORD_HASH='"));
-    console.log('  quoted in file:', isQuoted);
-    if (!isQuoted && adminHash && adminHash.length < 60) {
-      console.log('  ⚠ WARNING: Hash appears unquoted and may be truncated!');
-      console.log('  Fix: Add quotes: ADMIN_PASSWORD_HASH="' + adminHash + '..."');
-    }
-  }
+console.log('\nADMIN_PASSWORD:');
+console.log('  exists:', !!adminPassword);
+console.log('  length:', adminPassword?.length || 0);
+console.log('  value:', adminPassword ? '***' + adminPassword.substring(adminPassword.length - 2) : 'NOT SET');
+if (!adminPassword) {
+  console.log('  ⚠ WARNING: ADMIN_PASSWORD is required for authentication');
 }
 
-console.log('\nSESSION_SECRET:');
-console.log('  exists:', !!sessionSecret);
-console.log('  length:', sessionSecret?.length || 0);
-console.log('  prefix:', sessionSecret ? sessionSecret.substring(0, 8) + '...' : 'NOT SET');
+console.log('\nSESSION_TIMEOUT_MINUTES:');
+console.log('  exists:', !!sessionTimeout);
+console.log('  value:', sessionTimeout || '60 (default)');
+
 
 console.log('\nDATABASE_URL:');
 console.log('  exists:', !!dbUrl);
 console.log('  value:', dbUrl ? dbUrl.replace(/:[^:@]+@/, ':****@') : 'NOT SET');
 
-console.log('\nALLOW_INSECURE_DEV_LOGIN:', env.ALLOW_INSECURE_DEV_LOGIN || 'not set (default: false)');
 console.log('');
 

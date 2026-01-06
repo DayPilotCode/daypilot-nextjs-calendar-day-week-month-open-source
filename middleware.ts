@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { validateSessionCookie } from "@/lib/auth";
 
-const SESSION_COOKIE_NAME = "shiftaware_session";
+const AUTH_COOKIE = "authenticated";
 
 function isPublicRoute(pathname: string): boolean {
   return (
@@ -19,18 +18,19 @@ function isApiRoute(pathname: string): boolean {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  const authenticated = request.cookies.get(AUTH_COOKIE)?.value === "true";
+
   if (isPublicRoute(pathname)) {
+    if (authenticated && pathname === "/login") {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
     return NextResponse.next();
   }
 
-  const session = request.cookies.get(SESSION_COOKIE_NAME);
-  const isAuthed = validateSessionCookie(session?.value);
-
-  if (!isAuthed) {
+  if (!authenticated) {
     if (isApiRoute(pathname)) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("from", pathname);
     return NextResponse.redirect(loginUrl);

@@ -82,8 +82,8 @@ theme: {
 - Easy to implement and audit
 
 **Configuration:**
-- Password hash stored via env (`ADMIN_PASSWORD_HASH`)
-- Admin can change password via settings UI (writes new hash)
+- Password stored as plain env (`ADMIN_PASSWORD`) and compared directly (low-risk scope)
+- Admin can change password via settings UI (writes new env value)
 - Session timeout 60 minutes (configurable)
 
 **NOT using:**

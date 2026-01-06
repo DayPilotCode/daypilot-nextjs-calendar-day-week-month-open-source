@@ -1,30 +1,15 @@
 #!/usr/bin/env node
 /**
- * Test password verification
- * Usage: node scripts/test-password.js <password> <hash>
+ * OBSOLETE: This script is no longer used.
+ * 
+ * ShiftAware now uses simplified auth per plan:
+ * - Plain ADMIN_PASSWORD env variable (no hashing)
+ * - Direct string comparison
+ * 
+ * This script is kept for reference only and will be removed in a future cleanup.
  */
 
-const bcrypt = require('bcryptjs');
-
-const password = process.argv[2];
-const hash = process.argv[3];
-
-if (!password || !hash) {
-  console.error('Usage: node scripts/test-password.js <password> <hash>');
-  process.exit(1);
-}
-
-console.log('\nTesting password verification:');
-console.log('Password:', password);
-console.log('Hash:', hash);
-console.log('Hash length:', hash.length);
-console.log('\nVerifying...');
-
-const isValid = bcrypt.compareSync(password, hash);
-console.log('Result:', isValid ? '✓ VALID' : '✗ INVALID');
-
-if (!isValid) {
-  console.log('\nThe password does not match the hash.');
-  console.log('Make sure you are using the correct password that was used to generate the hash.');
-}
-
+console.warn('\n⚠️  This script is OBSOLETE.');
+console.warn('ShiftAware uses simplified auth: plain ADMIN_PASSWORD env variable.');
+console.warn('No password hash verification needed.\n');
+process.exit(1);

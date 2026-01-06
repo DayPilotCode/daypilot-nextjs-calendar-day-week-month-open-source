@@ -1,28 +1,12 @@
-# PowerShell script to test password verification
-# Usage: .\scripts\test-password.ps1 <password> <hash>
+# OBSOLETE: This script is no longer used.
+# 
+# ShiftAware now uses simplified auth per plan:
+# - Plain ADMIN_PASSWORD env variable (no hashing)
+# - Direct string comparison
+# 
+# This script is kept for reference only and will be removed in a future cleanup.
 
-param(
-    [Parameter(Mandatory=$true)]
-    [string]$Password,
-    
-    [Parameter(Mandatory=$true)]
-    [string]$Hash
-)
-
-Write-Host "`nTesting password verification:" -ForegroundColor Cyan
-Write-Host "Password: $Password"
-Write-Host "Hash: $Hash"
-Write-Host "Hash length: $($Hash.Length)"
-Write-Host "`nVerifying..." -ForegroundColor Yellow
-
-$bcrypt = require('bcryptjs')
-$isValid = $bcrypt.compareSync($Password, $Hash)
-
-if ($isValid) {
-    Write-Host "Result: ✓ VALID" -ForegroundColor Green
-} else {
-    Write-Host "Result: ✗ INVALID" -ForegroundColor Red
-    Write-Host "`nThe password does not match the hash." -ForegroundColor Yellow
-    Write-Host "Make sure you are using the correct password that was used to generate the hash." -ForegroundColor Yellow
-}
-
+Write-Warning "This script is OBSOLETE."
+Write-Warning "ShiftAware uses simplified auth: plain ADMIN_PASSWORD env variable."
+Write-Warning "No password hash verification needed."
+exit 1

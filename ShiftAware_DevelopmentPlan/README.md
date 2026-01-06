@@ -56,6 +56,7 @@
 
 ### Current Status
 - Phase 0 scaffold complete: Prisma schema + seed (Starlight Meadow 2026), signed-cookie auth, port palette (43000 app / 45432 db) in compose/Dockerfile.
+- Auth simplified: `ADMIN_PASSWORD` env, string compare, `authenticated` httpOnly cookie (1h).
 - Next: Phase 1 (shifts/preferences CRUD + UI, assignment algorithm groundwork, audit/coverage/PDF features).
 - Testing: See `TESTING_PLAN.md` for smoke/auth suites and future feature/regression checks.
 

@@ -27,27 +27,27 @@ Use this as a living checklist. Append new suites as features ship. Keep steps d
 5) `npm run lint` passes (if configured).
 
 ## Authentication Suite (current focus)
-Goal: isolate auth failures (env, hash, cookie).
+Goal: validate env-based auth (no hashing), cookie flow.
 
 1) **Env presence**
-   - Check `ADMIN_PASSWORD_HASH`, `SESSION_SECRET` exported or in `.env.local`.
-   - If using scripts: `node scripts/check-env.js` → expect true/length 60.
-2) **Hash verification**
-   - `node scripts/test-password.js "Admin123!" "$2a$..."` → expect `match: true`.
-3) **Login request**
-   - `curl -i -X POST http://localhost:43000/api/auth/login -d "password=Admin123!"` (or JSON if API expects it).
-   - Expect `Set-Cookie` with auth/session; HTTP 200/302.
-4) **Protected route access**
-   - With returned cookie: `curl -i http://localhost:43000/api/people -H "Cookie: <cookie>"` → expect 200 (once API exists) or redirect if not authenticated.
-   - Without cookie → expect 401/redirect.
-5) **Session timeout config**
-   - Confirm timeout set (default 60m). If configurable, validate cookie expires appropriately (manual wait or config to 1m for test).
-6) **Logout**
-   - `curl -i -X POST http://localhost:43000/api/auth/logout -H "Cookie: <cookie>"` → expect cookie cleared.
+   - Ensure `ADMIN_PASSWORD` is set (e.g., in `.env.local`).
+   - Optional: echo via `node -e "console.log(!!process.env.ADMIN_PASSWORD)"` (do NOT log the value).
+2) **Login request**
+   - `curl -i -X POST http://localhost:43000/api/auth/login -H "Content-Type: application/json" -d '{"password":"<pw>"}'`
+   - Expect `Set-Cookie: authenticated=true; HttpOnly; SameSite=Lax; Max-Age=3600` and HTTP 200.
+3) **Protected route access**
+   - With returned cookie: `curl -i http://localhost:43000/api/people -H "Cookie: authenticated=true"` → expect 200 (once API exists) or redirect for pages.
+   - Without cookie → expect 401 (API) or redirect to `/login` (pages).
+4) **Session timeout**
+   - Confirm cookie `Max-Age=3600`; adjust to short TTL in env (if supported) and re-test expiry manually.
+5) **Login redirect guard**
+   - When authenticated, visiting `/login` should redirect to `/dashboard`.
+6) **Logout (if implemented)**
+   - `curl -i -X POST http://localhost:43000/api/auth/logout -H "Cookie: authenticated=true"` → expect cookie cleared.
 7) **Common failure modes to capture**
-   - Env not loaded: login returns 500/false; log shows missing hash/secret.
-   - Wrong hash/password: login always 401; hash verify script passes? if not, regenerate hash.
-   - Cookies not set (proxy/HTTPS flag): check `Set-Cookie`; in dev ensure `secure` off if not HTTPS.
+   - Missing `ADMIN_PASSWORD` → login 500 with misconfig message.
+   - Wrong password → 401.
+   - Cookie not set (secure flag in http) → run over http in dev; ensure `secure` only in production.
 
 ## Feature Suites (add as features land)
 - **Shifts & Preferences (FR-001/FR-002):** CRUD APIs, validation, UI flows.

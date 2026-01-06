@@ -30,7 +30,7 @@
 ### Authentication (Day 5)
 - [x] Create auth middleware
 - [x] Implement login page
-- [x] Setup session management
+- [x] Setup session management (env `ADMIN_PASSWORD` compare + `authenticated` cookie, 1h TTL)
 - [x] Test authentication flow
 
 **Deliverable:** Working development environment with basic auth (completed). Next up: Phase 1 data/APIs and preference UI.

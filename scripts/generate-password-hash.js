@@ -1,23 +1,17 @@
 #!/usr/bin/env node
 /**
- * Generate a bcrypt hash for the password
- * Usage: node scripts/generate-password-hash.js <password>
+ * OBSOLETE: This script is no longer used.
+ * 
+ * ShiftAware now uses simplified auth per plan:
+ * - Plain ADMIN_PASSWORD env variable (no hashing)
+ * - Direct string comparison
+ * 
+ * This script is kept for reference only and will be removed in a future cleanup.
+ * 
+ * If you need to set a password, just add ADMIN_PASSWORD=yourpassword to .env.local
  */
 
-const bcrypt = require('bcryptjs');
-
-const password = process.argv[2];
-
-if (!password) {
-  console.error('Usage: node scripts/generate-password-hash.js <password>');
-  process.exit(1);
-}
-
-const hash = bcrypt.hashSync(password, 10);
-console.log('\nPassword hash generated:');
-console.log(hash);
-console.log('\nAdd this to your .env.local file (IMPORTANT: quotes are required):');
-console.log(`ADMIN_PASSWORD_HASH="${hash}"`);
-console.log('\nNote: The quotes are required because bcrypt hashes start with $,');
-console.log('      which dotenv interprets as variable expansion without quotes.\n');
-
+console.warn('\n⚠️  This script is OBSOLETE.');
+console.warn('ShiftAware uses simplified auth: plain ADMIN_PASSWORD env variable.');
+console.warn('Just set ADMIN_PASSWORD=yourpassword in .env.local\n');
+process.exit(1);
