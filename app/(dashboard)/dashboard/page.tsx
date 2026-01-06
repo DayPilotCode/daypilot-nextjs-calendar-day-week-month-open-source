@@ -151,7 +151,7 @@ export default function DashboardPage() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="bg-white border-none shadow-sm hover:shadow-md transition-all p-6 group">
+        <Card className="shadow-sm hover:shadow-md transition-all p-6 group">
           <div className="flex items-center justify-between mb-4">
             <div className="p-2 bg-primary-50 rounded-lg text-primary-600 group-hover:bg-primary-500 group-hover:text-white transition-colors">
               <Calendar className="w-6 h-6" />
@@ -162,7 +162,7 @@ export default function DashboardPage() {
           <p className="text-3xl font-black text-gray-900">{stats.totalShifts}</p>
         </Card>
 
-        <Card className="bg-white border-none shadow-sm hover:shadow-md transition-all p-6 group">
+        <Card className="shadow-sm hover:shadow-md transition-all p-6 group">
           <div className="flex items-center justify-between mb-4">
             <div className="p-2 bg-accent-50 rounded-lg text-accent-600 group-hover:bg-accent-500 group-hover:text-white transition-colors">
               <Users className="w-6 h-6" />
@@ -173,7 +173,7 @@ export default function DashboardPage() {
           <p className="text-3xl font-black text-gray-900">{stats.totalMembers}</p>
         </Card>
 
-        <Card className="bg-white border-none shadow-sm hover:shadow-md transition-all p-6 group">
+        <Card className="shadow-sm hover:shadow-md transition-all p-6 group">
           <div className="flex items-center justify-between mb-4">
             <div className="p-2 bg-success-50 rounded-lg text-success-600 group-hover:bg-success-500 group-hover:text-white transition-colors">
               <CheckCircle2 className="w-6 h-6" />
@@ -189,7 +189,7 @@ export default function DashboardPage() {
           </div>
         </Card>
 
-        <Card className="bg-white border-none shadow-sm hover:shadow-md transition-all p-6 group">
+        <Card className="shadow-sm hover:shadow-md transition-all p-6 group">
           <div className="flex items-center justify-between mb-4">
             <div className="p-2 bg-red-50 rounded-lg text-red-600 group-hover:bg-red-500 group-hover:text-white transition-colors">
               <AlertCircle className="w-6 h-6" />

@@ -140,3 +140,28 @@ Per `ROADMAP.md`, these features are not yet implemented:
 
 *Note: Skipped tests relate to Phase 3 functionality (Manual swaps, Audit log).*
 
+
+## 2026-01-06T18:30:00Z - UI Revamp Primitives Pass (Pending Execution)
+
+**Status:** ⚠️ Not executed in this session (agent cannot run commands here).
+
+### What to run
+1. From repo root, ensure `ADMIN_PASSWORD` set in `.env.local`.
+2. Restart dev server if env changed.
+3. Run auth + UI nav suite:
+   ```bash
+   node scripts/run-tests.js
+   ```
+   or manually:
+   - Smoke: `/api/health`
+   - Auth: login → cookie → protected route → logout
+   - UI nav: visit dashboard, preferences, schedule, admin/members, admin/shifts (expect 200 with session)
+
+### Expected checks for recent UI changes
+- Buttons/Card/Input/Select styling present (light surfaces, primary tokens).
+- Base theming `bg-gray-50 text-gray-900` applied globally.
+- Dashboard/Preferences/Admin cards render with shadows and no dark backgrounds.
+
+### Notes
+- No code changes to functionality; visuals updated to design tokens.
+- If tests pass, proceed to remaining screens per Phase1-1 UI Revamp plan.

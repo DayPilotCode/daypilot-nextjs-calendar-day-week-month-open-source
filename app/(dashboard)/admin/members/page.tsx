@@ -162,7 +162,7 @@ export default function MembersPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
-          <Card className="bg-white border-none shadow-sm p-2">
+          <Card className="shadow-sm p-2">
             <div className="relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input 
@@ -177,7 +177,7 @@ export default function MembersPage() {
 
           <div className="grid gap-4 md:grid-cols-2">
             {filteredMembers.map((member) => (
-              <Card key={member.id} className="bg-white border-none shadow-sm hover:shadow-md transition-all p-6 group">
+              <Card key={member.id} className="shadow-sm hover:shadow-md transition-all p-6 group">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-4">
                     <div className="w-14 h-14 rounded-2xl bg-gray-50 flex items-center justify-center text-3xl shadow-inner border border-gray-100 group-hover:scale-110 transition-transform">

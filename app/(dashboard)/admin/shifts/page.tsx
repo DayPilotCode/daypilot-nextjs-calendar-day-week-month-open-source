@@ -137,7 +137,7 @@ export default function ShiftsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
-          <Card className="bg-white border-none shadow-sm p-4 flex items-center justify-between">
+          <Card className="shadow-sm p-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Filter className="w-4 h-4 text-gray-400" />
               <span className="text-sm font-bold text-gray-400 uppercase tracking-widest">Filter by Event</span>
@@ -150,7 +150,7 @@ export default function ShiftsPage() {
 
           <div className="space-y-4">
             {shifts.map((shift) => (
-              <Card key={shift.id} className="bg-white border-none shadow-sm hover:shadow-md transition-all overflow-hidden p-0">
+              <Card key={shift.id} className="shadow-sm hover:shadow-md transition-all overflow-hidden p-0">
                 <div className="flex flex-col md:flex-row">
                   <div className={cn("w-2 md:w-3 shrink-0", getShiftTypeColor(shift.type))} />
                   <div className="flex-1 p-6">

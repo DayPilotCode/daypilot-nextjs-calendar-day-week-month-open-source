@@ -146,7 +146,7 @@ export default function SchedulePage() {
         </div>
       </div>
 
-      <Card className="p-0 border-none shadow-xl overflow-hidden h-[calc(100vh-340px)] min-h-[600px] flex flex-col bg-white">
+      <Card className="p-0 shadow-xl overflow-hidden h-[calc(100vh-340px)] min-h-[600px] flex flex-col bg-white">
         <CalendarView
           shifts={shifts}
           viewType={viewType}

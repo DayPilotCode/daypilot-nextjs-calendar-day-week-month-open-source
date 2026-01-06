@@ -174,7 +174,7 @@ export default function PreferencesPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 h-[calc(100vh-220px)] min-h-[600px]">
         <div className="lg:col-span-3 flex flex-col gap-6">
-          <Card className="bg-gradient-to-r from-primary-500 to-primary-600 border-none p-6 text-white relative overflow-hidden shadow-xl shadow-primary-500/10">
+          <Card className="bg-gradient-to-r from-primary-500 to-primary-600 p-6 text-white relative overflow-hidden shadow-xl shadow-primary-500/10 border-none">
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative">
               <div className="flex items-center gap-4">
@@ -197,7 +197,7 @@ export default function PreferencesPage() {
             </div>
           </Card>
 
-          <Card className="flex-grow p-0 border-none shadow-sm overflow-hidden bg-white">
+          <Card className="flex-grow p-0 shadow-sm overflow-hidden bg-white">
             <CalendarView
               shifts={shifts}
               onShiftClick={toggleShift}
@@ -208,7 +208,7 @@ export default function PreferencesPage() {
         </div>
 
         <div className="lg:col-span-1 space-y-6 flex flex-col">
-          <Card className="h-full flex flex-col border-none shadow-sm bg-white p-6">
+          <Card className="h-full flex flex-col shadow-sm bg-white p-6">
             <h2 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-6 flex items-center justify-between">
               Your Ranking
               <HelpCircle className="w-3.5 h-3.5" />
