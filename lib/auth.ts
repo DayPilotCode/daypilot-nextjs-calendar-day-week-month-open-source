@@ -32,8 +32,11 @@ const validateSessionValue = (value?: string): boolean => {
   const pieces = value.split(".");
   if (pieces.length < 2) return false;
 
-  const signature = pieces.pop() as string;
-  const payload = pieces.join(".");
+  const lastDot = value.lastIndexOf(".");
+  if (lastDot === -1) return false;
+
+  const payload = value.slice(0, lastDot);
+  const signature = value.slice(lastDot + 1);
 
   const secret = process.env.SESSION_SECRET?.trim();
   if (!secret) {
