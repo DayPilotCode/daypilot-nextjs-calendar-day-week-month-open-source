@@ -34,7 +34,14 @@ const validateSessionValue = (value?: string): boolean => {
 
   const signature = pieces.pop() as string;
   const payload = pieces.join(".");
-  const expected = crypto.createHmac("sha256", getSessionSecret()).update(payload).digest("hex");
+
+  const secret = process.env.SESSION_SECRET?.trim();
+  if (!secret) {
+    console.error("Session validation failed: SESSION_SECRET is not set");
+    return false;
+  }
+
+  const expected = crypto.createHmac("sha256", secret).update(payload).digest("hex");
 
   if (signature.length !== expected.length) return false;
   if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) return false;
@@ -52,13 +59,8 @@ const buildSessionValue = () => {
 };
 
 export async function verifyLogin(password: string): Promise<boolean> {
-  try {
-    const storedHash = getStoredPasswordHash();
-    return await bcrypt.compare(password, storedHash);
-  } catch (error) {
-    console.error("Login verification error:", error);
-    return false;
-  }
+  const storedHash = getStoredPasswordHash();
+  return bcrypt.compare(password, storedHash);
 }
 
 export async function createSession(): Promise<void> {

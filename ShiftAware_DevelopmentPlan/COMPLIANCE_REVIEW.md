@@ -15,3 +15,9 @@ Log of repository adherence vs. development plan. Append new entries per review.
   - Enforce pseudonymization end-to-end; remove real names from seeded/demo data; add conversion table handling.
   - Align compose/Dockerfile to port palette and include Postgres service; add migrations in entrypoint.
 
+## 2026-01-06T11:15:00Z
+- Phase 0 scaffold added: Tailwind layout, Prisma schema + seed, signed cookie auth, health endpoint, docker-compose with app/db ports aligned to plan.
+- Authentication hardening: middleware now validates signed cookies; login route surfaces misconfiguration when secrets/hashes absent.
+- Remaining gaps vs plan: no shift preference UI/API, no shift config UI/API, no assignment algorithm/coverage dashboards/manual swaps/PDF export/audit UI; pseudonym-to-name conversion remains external; testing/monitoring not yet added.
+- Deployment: Dockerfile now copies Prisma assets; migrate deploy runs before server start. Compose requires ADMIN_PASSWORD_HASH and SESSION_SECRET to be set.
+
