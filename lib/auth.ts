@@ -46,7 +46,10 @@ const validateSessionValue = (value?: string): boolean => {
   if (signature.length !== expected.length) return false;
   if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) return false;
 
-  const [, expiresIso] = payload.split(":");
+  const firstColon = payload.indexOf(":");
+  if (firstColon === -1) return false;
+
+  const expiresIso = payload.slice(firstColon + 1);
   const expiresAt = new Date(expiresIso);
 
   return !Number.isNaN(expiresAt.getTime()) && expiresAt.getTime() > Date.now();
