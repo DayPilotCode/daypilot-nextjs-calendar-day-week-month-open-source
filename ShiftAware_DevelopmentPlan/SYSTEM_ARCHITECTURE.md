@@ -1,5 +1,7 @@
 # System Architecture
 
+**Status:** Phase 0 scaffold in place (Prisma schema + seed, auth, port palette). Application services, shift/preference APIs, assignment engine, dashboards, and exports remain to be built (Phase 1+).
+
 ## High-Level Architecture
 
 ```

@@ -105,8 +105,8 @@ A lightweight, privacy-focused shift management tool for coordinating a rotating
 ---
 
 ## Next Steps
-1. Define detailed feature requirements
-2. Design data model and algorithm
-3. Plan UI/UX architecture
-4. Select technology stack
-5. Create development roadmap
+1. Phase 0 done: Prisma schema + seed (Starlight Meadow 2026), signed-cookie auth, port palette applied.
+2. Next focus: Phase 1 data/APIs and UI (shifts/preferences CRUD, assignment groundwork, audit/export/coverage).
+3. Implement algorithm with hard gender balance, core-only min shifts, explanations.
+4. Add coverage dashboard, manual swaps, PDF export, audit UI.
+5. Prepare monitoring/testing as part of Phase 2/3 hardening.

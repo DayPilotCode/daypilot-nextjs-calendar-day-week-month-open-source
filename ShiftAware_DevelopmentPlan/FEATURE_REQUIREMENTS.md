@@ -1,5 +1,7 @@
 # Feature Requirements Specification
 
+**Status:** Phase 0 completed (schema/seed/auth/ports). All FR-001..FR-012 features (shift config, preferences, assignment algorithm, coverage, swaps, PDF, audit UI, config UI) are pending implementation in Phase 1+.
+
 ## FR-001: Shift Preference Entry
 
 ### User Story

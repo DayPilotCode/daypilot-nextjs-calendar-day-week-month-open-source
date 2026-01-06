@@ -20,6 +20,7 @@
     "bcryptjs": "^2.4.3",
     "date-fns": "^3.6.0",
     "next": "15.1.2",
+    "prisma": "^5.18.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "zod": "^3.22.4"
@@ -34,7 +35,6 @@
     "eslint": "^9",
     "eslint-config-next": "15.1.0",
     "postcss": "^8.4.47",
-    "prisma": "^5.18.0",
     "tailwindcss": "^4.0.0",
     "tsx": "^4.7.0",
     "typescript": "^5"

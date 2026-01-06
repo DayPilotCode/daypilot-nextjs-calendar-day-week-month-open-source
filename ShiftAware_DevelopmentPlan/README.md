@@ -54,6 +54,10 @@
 
 ## 🎯 Quick Start Guide
 
+### Current Status
+- Phase 0 scaffold complete: Prisma schema + seed (Starlight Meadow 2026), signed-cookie auth, port palette (43000 app / 45432 db) in compose/Dockerfile.
+- Next: Phase 1 (shifts/preferences CRUD + UI, assignment algorithm groundwork, audit/coverage/PDF features).
+
 ### For Developers
 
 ```bash

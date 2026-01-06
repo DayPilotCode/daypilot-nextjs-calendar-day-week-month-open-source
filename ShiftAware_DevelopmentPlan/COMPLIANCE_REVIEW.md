@@ -21,3 +21,8 @@ Log of repository adherence vs. development plan. Append new entries per review.
 - Remaining gaps vs plan: no shift preference UI/API, no shift config UI/API, no assignment algorithm/coverage dashboards/manual swaps/PDF export/audit UI; pseudonym-to-name conversion remains external; testing/monitoring not yet added.
 - Deployment: Dockerfile now copies Prisma assets; migrate deploy runs before server start. Compose requires ADMIN_PASSWORD_HASH and SESSION_SECRET to be set.
 
+## 2026-01-06T12:30:00Z
+- Phase 0 completed per plan: Prisma schema + seed (Starlight Meadow 2026, 30 aliases, 6 shifts), auth with signed cookies, env placeholders, port palette (43000/45432) applied in compose/Dockerfile.
+- Plan alignment: Phase 0 roadmap items done (schema, migration, seed, auth, Docker). Remaining are Phase 1+ features: shifts/preferences CRUD + UI, assignment algorithm (hard gender balance, core-only min shifts), coverage dashboards, manual swaps, PDF export, audit UI, config UI, monitoring/tests.
+- Compliance gaps: No FR-001..FR-007 UI/API beyond auth yet; no FR-009 audit UI; no FR-012 coverage view; pseudonym→name mapping remains external; production cloud deploy not configured (only dev compose).
+
