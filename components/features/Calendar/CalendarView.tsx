@@ -113,14 +113,35 @@ const CalendarView = ({
     },
   });
 
+  // Clear calendar reference when switching to Grid view to prevent disposal errors
+  useEffect(() => {
+    if (viewType === "Grid" && calendar) {
+      setCalendar(undefined);
+    }
+  }, [viewType]);
+
+  // Update calendar when view changes (but only if calendar exists and is not Grid view)
   useEffect(() => {
     if (calendar && viewType !== "Grid") {
-      calendar.update({ 
-        startDate,
-        viewType: viewType === "Day" ? "Day" : "Week",
-        headerHeight: 60,
-        cellHeight: 60,
-      });
+      try {
+        // Check if calendar instance is still valid before updating
+        if (calendar && !(calendar as any).disposed) {
+          calendar.update({ 
+            startDate,
+            viewType: viewType === "Day" ? "Day" : "Week",
+            headerHeight: 60,
+            cellHeight: 60,
+          });
+        }
+      } catch (error) {
+        // If calendar is disposed, clear the reference
+        if (error instanceof Error && error.message.includes("disposed")) {
+          console.warn("[CalendarView] Calendar instance was disposed, clearing reference");
+          setCalendar(undefined);
+        } else {
+          throw error;
+        }
+      }
     }
   }, [calendar, startDate, viewType]);
 
@@ -234,9 +255,14 @@ const CalendarView = ({
         renderGridView()
       ) : (
         <DayPilotCalendar
+          key={`daypilot-${viewType}-${startDate}`}
           {...config}
           events={events}
-          controlRef={setCalendar}
+          controlRef={(ref) => {
+            if (ref) {
+              setCalendar(ref);
+            }
+          }}
         />
       )}
     </div>
