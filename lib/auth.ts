@@ -5,21 +5,20 @@ import { cookies } from "next/headers";
 const SESSION_COOKIE_NAME = "shiftaware_session";
 const DEFAULT_TTL_MINUTES = Number(process.env.SESSION_TIMEOUT_MINUTES ?? "60");
 
-const getSessionSecret = (): string => {
-  const secret = process.env.SESSION_SECRET?.trim();
-  if (!secret) {
-    throw new Error("SESSION_SECRET environment variable is not set");
-  }
-  return secret;
-};
+const SESSION_SECRET = process.env.SESSION_SECRET?.trim();
+const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH?.trim();
 
-const getStoredPasswordHash = (): string => {
-  const hash = process.env.ADMIN_PASSWORD_HASH?.trim();
-  if (!hash) {
-    throw new Error("ADMIN_PASSWORD_HASH environment variable is not set");
-  }
-  return hash;
-};
+// Fail fast at module load if critical envs are missing so startup, not login, surfaces misconfiguration.
+if (!SESSION_SECRET) {
+  throw new Error("SESSION_SECRET environment variable is not set");
+}
+
+if (!ADMIN_PASSWORD_HASH) {
+  throw new Error("ADMIN_PASSWORD_HASH environment variable is not set");
+}
+
+const getSessionSecret = (): string => SESSION_SECRET;
+const getStoredPasswordHash = (): string => ADMIN_PASSWORD_HASH;
 
 const signPayload = (payload: string): string => {
   const secret = getSessionSecret();
@@ -38,13 +37,7 @@ const validateSessionValue = (value?: string): boolean => {
   const payload = value.slice(0, lastDot);
   const signature = value.slice(lastDot + 1);
 
-  const secret = process.env.SESSION_SECRET?.trim();
-  if (!secret) {
-    console.error("Session validation failed: SESSION_SECRET is not set");
-    return false;
-  }
-
-  const expected = crypto.createHmac("sha256", secret).update(payload).digest("hex");
+  const expected = crypto.createHmac("sha256", SESSION_SECRET).update(payload).digest("hex");
 
   if (signature.length !== expected.length) return false;
   if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) return false;
