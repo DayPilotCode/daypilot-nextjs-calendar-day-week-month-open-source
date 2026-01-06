@@ -1,14 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { 
-  Sparkles, 
-  ChevronRight, 
-  Calendar, 
-  UserCircle2, 
+import {
+  Sparkles,
+  ChevronRight,
+  Calendar,
+  UserCircle2,
   CheckCircle2,
   Trash2,
-  HelpCircle
+  HelpCircle,
+  Clock,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";

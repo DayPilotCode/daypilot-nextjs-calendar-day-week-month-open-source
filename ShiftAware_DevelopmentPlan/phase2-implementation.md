@@ -41,3 +41,18 @@
       - PDF export remains functional (landscape/portrait, member scope, pseudonym map, coverage summary)
       - perf sanity on seed data; responsive scroll; accessibility (focus rings)
 
+- timestamp: 2026-01-07T18:00:00Z
+  actions:
+    - phase2: removed wx-react-gantt (React 18 peer) and built custom Day/Week timeline with `react-window` + date-fns; kept Grid view for FR-005
+    - phase2: mapped shifts to virtualized rows with time-scaled bars, coverage pills, and click handlers for shift/assignment interactions
+    - phase2: dropped DayPilot/Gantt shims and added timeline styling to CalendarView
+    - phase2: to-verify: schedule page Day/Week/Grid smoke and PDF export regression
+
+- timestamp: 2026-01-07T21:00:00Z
+  actions:
+    - phase2: stabilized timeline usability (min bar widths, non-wrapping hour/day scale with horizontal scroll) and fixed preferences page Clock import
+    - phase2: remaining TODOs for next session:
+      - run manual smoke on `/schedule` Day/Week/Grid and `/preferences`
+      - verify PDF export still passes (landscape/portrait, member scope, pseudonym map)
+      - polish timeline responsiveness (mobile), and add tests per TESTING_PLAN visualization suite
+

@@ -95,7 +95,7 @@
 ## Phase 2: Visualization & Export (Week 4) [in_progress]
 
 ### Schedule Visualization (Days 1-3)
-- [ ] Replace DayPilot with SVAR React Gantt (wx-react-gantt) for timeline visualization
+- [ ] Replace DayPilot with custom React-window timeline (Day/Week) + Grid
 - [x] Enhanced Calendar component (day/week/grid views) — note: Grid required, Month removed
 - [ ] Advanced shift card interactions
 - [x] Dynamic coverage indicators

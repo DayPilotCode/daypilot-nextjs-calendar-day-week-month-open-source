@@ -81,3 +81,7 @@ Log of repository adherence vs. development plan. Append new entries per review.
 - Decision: Replace DayPilot with SVAR React Gantt (wx-react-gantt) for schedule visualization; scope views to Day/Week/Grid (no Month) to satisfy FR-005 Grid requirement.
 - Roadmap updated to reflect Gantt migration as next Phase 2 goal; Phase2 implementation log updated with technical steps and testing checklist.
 - Testing Plan updated: Visualization suite now targets Day/Week/Grid with SVAR Gantt; PDF export must remain functional (landscape/portrait, member scope, pseudonym map, coverage summary).
+
+## 2026-01-07T18:00:00Z
+- Change: Abandoned wx-react-gantt (React 18 peer) due to React 19 incompatibility; implemented custom Day/Week timeline using react-window + date-fns, keeping Grid view for FR-005.
+- Impact: Removed DayPilot/Gantt shims; schedule visualization now React 19–native. Requires smoke on Day/Week/Grid and PDF export regression.
