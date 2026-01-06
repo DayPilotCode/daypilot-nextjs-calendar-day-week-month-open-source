@@ -87,12 +87,12 @@ Goal: validate new sidebar/header navigation and design system compliance.
 - Visual/UX check against design system and UI spec (palette, spacing, key screens) — fill in once UI is built.
 
 ## Visualization & Export Suite (Phase 2)
-Goal: validate enhanced schedule views and PDF export options.
+Goal: validate enhanced schedule views (SVAR Gantt) and PDF export options.
 
-1) **Schedule Views (Day/Week/Month)**
-   - Load `/schedule` with seeded data; verify Day/Week/Month toggles persist across refresh.
-   - Confirm DayPilot view renders events with coverage badges and assignments.
-   - Month grid shows dates from current event month; cells outside month are muted.
+1) **Schedule Views (Day/Week/Grid)**
+   - Load `/schedule` with seeded data; verify Day/Week/Grid toggles persist across refresh.
+   - SVAR Gantt renders shifts with coverage badges/assignments; Grid view replaces any Month view.
+   - Cells outside the event window are visually muted; scrolling and zoom behave.
 2) **Filtering & Metrics**
    - Coverage filter (All/Full/Partial/Unstaffed) narrows visible shifts and updates metrics cards.
    - Role filter narrows to matching requiredRoles/assignment roles.
@@ -104,8 +104,8 @@ Goal: validate enhanced schedule views and PDF export options.
    - Pseudonym map page included when toggle is on; shows alias + avatar token.
    - Coverage summary line matches on-screen metrics (filled/capacity).
 4) **Accessibility & Layout**
-   - Calendar area remains scrollable/responsive; buttons have focus ring.
-   - Legend colors align to design system (success/accent/red).
+   - Gantt area remains scrollable/responsive; buttons have focus ring.
+   - Legend/colors align to design system (success/accent/red).
 5) **Performance sanity**
    - Schedule view renders within 1s on seed data; export completes without console errors.
 

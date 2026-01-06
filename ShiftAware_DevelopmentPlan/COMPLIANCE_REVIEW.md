@@ -76,3 +76,8 @@ Log of repository adherence vs. development plan. Append new entries per review.
   - **Prioritize Grid View**: Implement the `Grid View` matrix as required by `FR-005`.
   - **Design Confirmation**: The current high-end UI/UX (gradients, shadows, refined aesthetics) is intentional and confirmed by the user. The `ShiftAware_DevelopmentPlan` has been updated to reflect this modern design paradigm.
   - **Correct Roadmap**: Update `ROADMAP.md` to reflect `day/week/grid` views to ensure future consistency.
+
+## 2026-01-07T00:05:00Z
+- Decision: Replace DayPilot with SVAR React Gantt (wx-react-gantt) for schedule visualization; scope views to Day/Week/Grid (no Month) to satisfy FR-005 Grid requirement.
+- Roadmap updated to reflect Gantt migration as next Phase 2 goal; Phase2 implementation log updated with technical steps and testing checklist.
+- Testing Plan updated: Visualization suite now targets Day/Week/Grid with SVAR Gantt; PDF export must remain functional (landscape/portrait, member scope, pseudonym map, coverage summary).

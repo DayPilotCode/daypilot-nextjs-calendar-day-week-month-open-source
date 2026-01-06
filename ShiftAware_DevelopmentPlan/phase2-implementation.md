@@ -24,3 +24,20 @@
     - phase2: updated ROADMAP Phase 2 checklist (calendar day/week/month complete; coverage badges, filters, metrics, persistent view; member-scope PDF with pseudonym map)
     - phase2: noted remaining Phase 2 gaps (pseudonym toggle UI, batch export, print CSS, mobile polish, advanced shift card interactions)
 
+- timestamp: 2026-01-07T00:00:00Z
+  actions:
+    - phase2: plan Gantt migration — replace DayPilot with SVAR React Gantt (wx-react-gantt) per `.context/AGENT_INSTRUCTION_GANTT_REPLACEMENT.md`
+    - phase2: scope views to Day/Week/Grid (remove Month), align with FR-005 Grid requirement
+    - phase2: technical steps:
+      - uninstall DayPilot; install wx-react-gantt (ensure date-fns present)
+      - add `Timeline.tsx` wrapper: transform shifts→tasks/resources, pass start/end, click handler, coverage colors
+      - add Gantt CSS overrides in globals using design tokens (colors, radius, shadows, typography)
+      - integrate in schedule page with Day/Week/Grid toggles; preferences page for selection
+      - ensure `/api/shifts` provides assignments for visualization/export parity
+    - phase2: testing checklist:
+      - render correctness (start/end, duration) and coverage badges
+      - filters (role/member/status) + metrics still update
+      - Day/Week/Grid toggle persistence; no Month view
+      - PDF export remains functional (landscape/portrait, member scope, pseudonym map, coverage summary)
+      - perf sanity on seed data; responsive scroll; accessibility (focus rings)
+

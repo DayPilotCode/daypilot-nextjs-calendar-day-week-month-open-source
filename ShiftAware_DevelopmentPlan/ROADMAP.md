@@ -95,7 +95,8 @@
 ## Phase 2: Visualization & Export (Week 4) [in_progress]
 
 ### Schedule Visualization (Days 1-3)
-- [x] Enhanced Calendar component (day/week/grid views)
+- [ ] Replace DayPilot with SVAR React Gantt (wx-react-gantt) for timeline visualization
+- [x] Enhanced Calendar component (day/week/grid views) — note: Grid required, Month removed
 - [ ] Advanced shift card interactions
 - [x] Dynamic coverage indicators
 - [x] Real-time balance metrics
@@ -111,7 +112,7 @@
 - [ ] Print-optimized CSS for schedule view
 
 **Week 4 Deliverable:** Enhanced schedule visualization and production-ready PDF export  
-**Current status:** Calendar (Day/Week/Grid), coverage badges, filters, metrics, persistent view, member-scope PDF with pseudonym map; remaining: toggle for pseudonym map, batch export, print CSS, mobile polish, advanced card interactions.
+**Current status:** Calendar (Day/Week/Grid) planned with SVAR Gantt replacement; coverage badges, filters, metrics, persistent view in place; member-scope PDF with pseudonym map delivered. Remaining: implement Gantt swap, Grid view (no Month), pseudonym toggle UI, batch export, print CSS, mobile polish, advanced card interactions.
 
 ---
 
