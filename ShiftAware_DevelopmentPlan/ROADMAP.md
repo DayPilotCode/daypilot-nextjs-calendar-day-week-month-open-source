@@ -16,6 +16,7 @@
 - [ ] Setup Docker + Docker Compose
 - [ ] Initialize Git repository
 - [ ] Configure environment variables
+- [ ] Verify rare-port palette (43000 app, 43010 python, 45432 postgres) and override host ports if conflicts
 
 ### Database Setup (Days 3-4)
 - [ ] Create Prisma schema

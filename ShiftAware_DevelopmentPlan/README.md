@@ -62,8 +62,9 @@ git clone <repository>
 cd ShiftAware
 npm install
 
-# 2. Setup database
-docker-compose up -d postgres
+# 2. Setup database (rare host ports to avoid conflicts)
+# db exposed as 45432->5432 by default; override in compose if needed
+docker compose up -d db
 npx prisma migrate dev
 
 # 3. Configure environment
@@ -73,6 +74,12 @@ cp .env.example .env.local
 # 4. Run development server
 npm run dev
 ```
+
+### Refactor Branch & Canonical Plan
+- **Branch:** create a refactor branch (e.g., `refactor/plan-rebase`) from `develop`, prune DayPilot clone artifacts, keep only reusable UI pieces, and rebuild per this plan.
+- **Canonical docs:** this `ShiftAware_DevelopmentPlan` is authoritative; reconcile with `.context/251230_DevelopmentPlan.md` and `.context/Docker_Development_Environment_Usage.md` for prototyping philosophy.
+- **Port palette (host → container):** app `43000→3000`, optional python-compute `43010→8000`, Postgres `45432→5432`. Override in compose/env if any host port is taken.
+- **Conflicts:** if 43000/43010/45432 are in use, adjust the host side in `docker-compose.override.yml` (or env) and keep container ports unchanged.
 
 ### For Stakeholders
 

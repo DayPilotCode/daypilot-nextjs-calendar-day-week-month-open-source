@@ -367,6 +367,15 @@ function scoreAssignment(
 
 ## Deployment Architecture
 
+### Port Palette (host → container)
+| Service | Host Port | Container Port | Notes |
+|---------|-----------|----------------|-------|
+| Next.js app | 43000 | 3000 | Avoids conflicts with other projects using 3000/3005 |
+| PostgreSQL | 45432 | 5432 | Host-exposed for local tools; keep container at 5432 |
+| Python compute (optional) | 43010 | 8000 | Only if the FastAPI proto is enabled |
+
+> If a host port is busy, change the **host** side in compose overrides; keep container ports unchanged.
+
 ### Container Structure
 
 ```dockerfile
@@ -416,7 +425,7 @@ services:
   app:
     build: .
     ports:
-      - "3000:3000"
+      - "43000:3000"
     environment:
       - DATABASE_URL=postgresql://user:pass@db:5432/shiftaware
       - NODE_ENV=development
@@ -433,13 +442,15 @@ services:
       - POSTGRES_PASSWORD=pass
       - POSTGRES_DB=shiftaware
     ports:
-      - "5432:5432"
+      - "45432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
 volumes:
   postgres_data:
 ```
+
+**Optional service:** if using the Python compute prototype, expose it as `43010:8000` and reference it via service name (`python-compute:8000`) from other containers.
 
 ### Production Deployment
 
