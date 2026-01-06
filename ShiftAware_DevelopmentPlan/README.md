@@ -50,6 +50,10 @@
 - Testing strategy
 - Risk mitigation
 
+### Design References
+- [Design System](../.context/260106_DESIGN_SYSTEM_1.md) — color palette, typography, spacing, components, accessibility.
+- [UI Specification](../.context/UI_SPECIFICATION_1.md) — app shell, login/dashboard, timeline, preferences, admin views, interaction patterns.
+
 ---
 
 ## 🎯 Quick Start Guide

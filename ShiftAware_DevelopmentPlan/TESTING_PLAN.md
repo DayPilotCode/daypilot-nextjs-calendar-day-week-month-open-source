@@ -61,6 +61,7 @@ Goal: validate env-based auth (no hashing), cookie flow.
 - Exports generate PDFs without PII.
 - Protected routes reject unauthenticated requests.
 - Basic perf sanity: key endpoints <500ms p95 on seed data.
+- Visual/UX check against design system and UI spec (palette, spacing, key screens) — fill in once UI is built.
 
 ## How to Append
 - Add new suite sections at the bottom.

@@ -47,6 +47,7 @@
 - [ ] Avatar assignment system
 - [ ] Experience level configuration
 - [ ] Validation and error handling
+- [ ] Apply design system (palette/typography/spacing) from `.context/260106_DESIGN_SYSTEM_1.md`
 
 #### Shift Configuration (Days 3-4)
 - [ ] API: CRUD operations for shifts
@@ -54,6 +55,7 @@
 - [ ] Shift type and role configuration
 - [ ] Desirability scoring system
 - [ ] Event period setup
+- [ ] Use UI spec layouts for shell/sidebar/forms from `.context/UI_SPECIFICATION_1.md`
 
 #### Preference Entry (Day 5)
 - [ ] API: Preference submission endpoint
@@ -61,8 +63,9 @@
 - [ ] Multi-select functionality
 - [ ] Preference validation (min shifts)
 - [ ] Submission confirmation
+- [ ] Timeline/selection UI aligned to `.context/UI_SPECIFICATION_1.md`
 
-**Week 2 Deliverable:** Users can create profiles, configure shifts, enter preferences
+**Week 2 Deliverable:** Users can create profiles, configure shifts, enter preferences (with design system + UI spec applied)
 
 ### Week 3: Assignment Algorithm
 
@@ -83,6 +86,7 @@
 - [ ] Results visualization
 - [ ] Explanation generation
 - [ ] Error handling
+- [ ] UI components follow design system (cards/buttons) and UI spec for admin views
 
 **Week 3 Deliverable:** Working assignment algorithm with basic UI
 

@@ -133,6 +133,8 @@ POST   /api/export/pdf              - Generate PDF
 
 ## Component Architecture
 
+**Design source of truth:** Follow the design system (`.context/260106_DESIGN_SYSTEM_1.md`) for palette/typography/spacing and the UI spec (`.context/UI_SPECIFICATION_1.md`) for app shell, login/dashboard, timeline, preferences, and admin views.
+
 ### Page Components
 ```
 app/
