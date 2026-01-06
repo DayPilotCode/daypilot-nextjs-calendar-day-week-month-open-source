@@ -42,53 +42,53 @@
 ### Week 2: Data Management
 
 #### Team Member Management (Days 1-2)
-- [ ] API: CRUD operations for team members
-- [ ] UI: Member list and create form
-- [ ] Avatar assignment system
-- [ ] Experience level configuration
-- [ ] Validation and error handling
-- [ ] Apply design system (palette/typography/spacing) from `.context/260106_DESIGN_SYSTEM_1.md`
+- [x] API: CRUD operations for team members
+- [x] UI: Member list and create form
+- [x] Avatar assignment system
+- [x] Experience level configuration
+- [x] Validation and error handling
+- [x] Apply design system (palette/typography/spacing) from `.context/260106_DESIGN_SYSTEM_1.md`
 
 #### Shift Configuration (Days 3-4)
-- [ ] API: CRUD operations for shifts
-- [ ] UI: Shift creation form
-- [ ] Shift type and role configuration
-- [ ] Desirability scoring system
-- [ ] Event period setup
-- [ ] Use UI spec layouts for shell/sidebar/forms from `.context/UI_SPECIFICATION_1.md`
+- [x] API: CRUD operations for shifts
+- [x] UI: Shift creation form
+- [x] Shift type and role configuration
+- [x] Desirability scoring system
+- [x] Event period setup
+- [x] Use UI spec layouts for shell/sidebar/forms from `.context/UI_SPECIFICATION_1.md`
 
 #### Preference Entry (Day 5)
-- [ ] API: Preference submission endpoint
-- [ ] UI: Calendar-based shift selector
-- [ ] Multi-select functionality
-- [ ] Preference validation (min shifts)
-- [ ] Submission confirmation
-- [ ] Timeline/selection UI aligned to `.context/UI_SPECIFICATION_1.md`
+- [x] API: Preference submission endpoint
+- [x] UI: Calendar-based shift selector
+- [x] Multi-select functionality
+- [x] Preference validation (min shifts)
+- [x] Submission confirmation
+- [x] Timeline/selection UI aligned to `.context/UI_SPECIFICATION_1.md`
 
-**Week 2 Deliverable:** Users can create profiles, configure shifts, enter preferences (with design system + UI spec applied)
+**Week 2 Deliverable:** Users can create profiles, configure shifts, enter preferences (with design system + UI spec applied) ✅
 
 ### Week 3: Assignment Algorithm
 
 #### Algorithm Core (Days 1-3)
-- [ ] Scoring functions implementation
+- [x] Scoring functions implementation
   - Preference matching
   - Workload balance
   - Experience distribution
   - Gender balance
-- [ ] Constraint validation
-- [ ] Optimization logic
-- [ ] Random assignment fallback
-- [ ] Unit tests for algorithm
+- [x] Constraint validation
+- [x] Optimization logic
+- [x] Random assignment fallback
+- [x] Unit tests for algorithm
 
 #### Algorithm Integration (Days 4-5)
-- [ ] API: Assignment execution endpoint
-- [ ] UI: Admin trigger button
-- [ ] Results visualization
-- [ ] Explanation generation
-- [ ] Error handling
-- [ ] UI components follow design system (cards/buttons) and UI spec for admin views
+- [x] API: Assignment execution endpoint
+- [x] UI: Admin trigger button
+- [x] Results visualization
+- [x] Explanation generation
+- [x] Error handling
+- [x] UI components follow design system (cards/buttons) and UI spec for admin views
 
-**Week 3 Deliverable:** Working assignment algorithm with basic UI (completed)
+**Week 3 Deliverable:** Working assignment algorithm with basic UI (completed) ✅
 
 ---
 
