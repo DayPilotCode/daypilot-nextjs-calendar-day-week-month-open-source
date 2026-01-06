@@ -58,3 +58,9 @@ Log of repository adherence vs. development plan. Append new entries per review.
   - **Realignment Required**: Re-implement `/preferences` and `/schedule` (currently dashboard/events) using a proper Calendar component (DayPilot Lite or similar as per original scaffold).
   - **Feature Catch-up**: Prioritize manual swaps (FR-006) and coverage indicators (FR-012) to meet Phase 1/2 transition requirements.
   - **Transparency**: Update UI to surface algorithm scores and decision rationales (FR-004).
+
+## 2026-01-06T19:35:00Z
+- Phase 2 visualization/export alignment: schedule now supports Day/Week/Month calendar views with coverage badges, staffing metrics, and filters (coverage, role, member) per Phase 2 plan.
+- Export flow upgraded: PDF export supports landscape/portrait, member-specific scope, and pseudonym map sheet; coverage summary added (FR-007).
+- API parity: `/api/shifts` now returns assignments (with team member details) to power visualization/export without stale data.
+- Remaining gaps: drag/drop swap UI (FR-006) and predictive gap analysis (FR-012) still outstanding; PDF templates could be further themed beyond current table layout; audit viewer remains pending.

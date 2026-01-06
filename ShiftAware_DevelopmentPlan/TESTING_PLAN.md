@@ -86,21 +86,28 @@ Goal: validate new sidebar/header navigation and design system compliance.
 - Basic perf sanity: key endpoints <500ms p95 on seed data.
 - Visual/UX check against design system and UI spec (palette, spacing, key screens) — fill in once UI is built.
 
-## Visualization & Export Suite (Phase 2 placeholder)
-Goal: validate schedule views and PDF export as they ship.
+## Visualization & Export Suite (Phase 2)
+Goal: validate enhanced schedule views and PDF export options.
 
-1) **Schedule Views**
-   - Day/Week/month (if implemented) render with correct palette/spacing (design system).
-   - Sidebar/nav intact; responsive behavior works.
-2) **Coverage Indicators**
-   - Status colors match spec (covered/understaffed/unfilled).
-   - Filtering by role/member/status works.
+1) **Schedule Views (Day/Week/Month)**
+   - Load `/schedule` with seeded data; verify Day/Week/Month toggles persist across refresh.
+   - Confirm DayPilot view renders events with coverage badges and assignments.
+   - Month grid shows dates from current event month; cells outside month are muted.
+2) **Filtering & Metrics**
+   - Coverage filter (All/Full/Partial/Unstaffed) narrows visible shifts and updates metrics cards.
+   - Role filter narrows to matching requiredRoles/assignment roles.
+   - Member filter narrows to shifts containing selected member assignment.
+   - Metrics cards (coverage %, full/partial/unstaffed counts) update with filters.
 3) **Export PDF**
-   - Export succeeds with default template; file downloads.
-   - Pseudonym mapping toggle honored (if implemented).
-   - Print-optimized CSS applied (no overflow/clipping).
-4) **Performance sanity**
-   - Schedule view renders without obvious jank on seed data.
+   - Export in landscape/portrait for full schedule; file downloads.
+   - Member-only export limits rows to that member’s assignments.
+   - Pseudonym map page included when toggle is on; shows alias + avatar token.
+   - Coverage summary line matches on-screen metrics (filled/capacity).
+4) **Accessibility & Layout**
+   - Calendar area remains scrollable/responsive; buttons have focus ring.
+   - Legend colors align to design system (success/accent/red).
+5) **Performance sanity**
+   - Schedule view renders within 1s on seed data; export completes without console errors.
 
 ## How to Append
 - Add new suite sections at the bottom.

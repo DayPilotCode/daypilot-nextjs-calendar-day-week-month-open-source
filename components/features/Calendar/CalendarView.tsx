@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { DayPilot, DayPilotCalendar, DayPilotNavigator } from "@daypilot/daypilot-lite-react";
+import React, { useEffect, useMemo, useState } from "react";
+import { DayPilot, DayPilotCalendar } from "@daypilot/daypilot-lite-react";
+import { eachDayOfInterval, endOfMonth, endOfWeek, format, isSameDay, startOfMonth, startOfWeek } from "date-fns";
 import "./CalendarView.css";
 
 interface CalendarViewProps {
@@ -14,6 +15,14 @@ interface CalendarViewProps {
   showAssignments?: boolean;
 }
 
+type CoverageState = "full" | "partial" | "empty";
+
+const coverageStyles: Record<CoverageState, { badge: string; text: string; border: string; bg: string }> = {
+  full: { badge: "bg-success-500", text: "text-success-700", border: "border-success-100", bg: "bg-success-50" },
+  partial: { badge: "bg-accent-500", text: "text-accent-700", border: "border-accent-100", bg: "bg-accent-50" },
+  empty: { badge: "bg-red-500", text: "text-red-700", border: "border-red-100", bg: "bg-red-50" },
+};
+
 const CalendarView = ({
   shifts,
   onShiftClick,
@@ -25,7 +34,7 @@ const CalendarView = ({
 }: CalendarViewProps) => {
   const [calendar, setCalendar] = useState<DayPilot.Calendar>();
 
-  const [config, setConfig] = useState<DayPilot.CalendarConfig>({
+  const [config] = useState<DayPilot.CalendarConfig>({
     viewType: viewType === "Day" ? "Day" : "Week",
     headerHeight: 40,
     cellHeight: 40,
@@ -105,7 +114,7 @@ const CalendarView = ({
   });
 
   useEffect(() => {
-    if (calendar) {
+    if (calendar && viewType !== "Month") {
       calendar.update({ 
         startDate,
         viewType: viewType === "Day" ? "Day" : "Week",
@@ -129,13 +138,93 @@ const CalendarView = ({
     },
   }));
 
+  const baseDate = useMemo(() => {
+    if (startDate) return new Date(startDate);
+    if (shifts.length > 0) return new Date(shifts[0].startTime);
+    return new Date();
+  }, [startDate, shifts]);
+
+  const monthDays = useMemo(
+    () =>
+      eachDayOfInterval({
+        start: startOfWeek(startOfMonth(baseDate), { weekStartsOn: 1 }),
+        end: endOfWeek(endOfMonth(baseDate), { weekStartsOn: 1 }),
+      }),
+    [baseDate]
+  );
+
+  const monthRows = useMemo(() => {
+    return monthDays.map((day) => {
+      const dayShifts = shifts.filter((shift) => isSameDay(new Date(shift.startTime), day));
+      return { day, shifts: dayShifts };
+    });
+  }, [monthDays, shifts]);
+
+  const getCoverage = (shift: any): CoverageState => {
+    const filled = shift.assignments?.length || 0;
+    if (filled >= shift.capacity) return "full";
+    if (filled > 0) return "partial";
+    return "empty";
+  };
+
+  const renderMonthView = () => (
+    <div className="calendar-month-grid">
+      {monthRows.map(({ day, shifts: dayShifts }) => {
+        const isCurrentMonth = day.getMonth() === baseDate.getMonth();
+        return (
+          <div key={day.toISOString()} className={`month-cell ${isCurrentMonth ? "" : "muted"}`}>
+            <div className="month-cell-header">
+              <span className="month-cell-day">{format(day, "d")}</span>
+              <span className="month-cell-weekday">{format(day, "EEE")}</span>
+            </div>
+            <div className="month-cell-body">
+              {dayShifts.length === 0 ? (
+                <div className="empty-slot">No shifts</div>
+              ) : (
+                dayShifts.map((shift) => {
+                  const status = getCoverage(shift);
+                  const style = coverageStyles[status];
+                  const filled = shift.assignments?.length || 0;
+                  return (
+                    <button
+                      key={shift.id}
+                      onClick={() => {
+                        if (showAssignments && onAssignmentClick) {
+                          onAssignmentClick(shift);
+                        } else if (onShiftClick) {
+                          onShiftClick(shift.id);
+                        }
+                      }}
+                      className={`month-shift ${style.bg} ${style.border}`}
+                    >
+                      <div className="month-shift-top">
+                        <span className="month-shift-type">{shift.type.replace("_", " ")}</span>
+                        <span className={`month-shift-badge ${style.badge}`}></span>
+                      </div>
+                      <div className="month-shift-time">{format(new Date(shift.startTime), "HH:mm")} - {format(new Date(shift.endTime), "HH:mm")}</div>
+                      <div className={`month-shift-fill ${style.text}`}>{filled}/{shift.capacity} filled</div>
+                    </button>
+                  );
+                })
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+
   return (
     <div className="calendar-container">
-      <DayPilotCalendar
-        {...config}
-        events={events}
-        controlRef={setCalendar}
-      />
+      {viewType === "Month" ? (
+        renderMonthView()
+      ) : (
+        <DayPilotCalendar
+          {...config}
+          events={events}
+          controlRef={setCalendar}
+        />
+      )}
     </div>
   );
 };
