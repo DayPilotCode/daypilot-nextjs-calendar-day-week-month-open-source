@@ -86,6 +86,22 @@ Goal: validate new sidebar/header navigation and design system compliance.
 - Basic perf sanity: key endpoints <500ms p95 on seed data.
 - Visual/UX check against design system and UI spec (palette, spacing, key screens) — fill in once UI is built.
 
+## Visualization & Export Suite (Phase 2 placeholder)
+Goal: validate schedule views and PDF export as they ship.
+
+1) **Schedule Views**
+   - Day/Week/month (if implemented) render with correct palette/spacing (design system).
+   - Sidebar/nav intact; responsive behavior works.
+2) **Coverage Indicators**
+   - Status colors match spec (covered/understaffed/unfilled).
+   - Filtering by role/member/status works.
+3) **Export PDF**
+   - Export succeeds with default template; file downloads.
+   - Pseudonym mapping toggle honored (if implemented).
+   - Print-optimized CSS applied (no overflow/clipping).
+4) **Performance sanity**
+   - Schedule view renders without obvious jank on seed data.
+
 ## How to Append
 - Add new suite sections at the bottom.
 - Keep steps numbered with expected outcomes.

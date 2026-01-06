@@ -88,57 +88,57 @@
 - [ ] Error handling
 - [ ] UI components follow design system (cards/buttons) and UI spec for admin views
 
-**Week 3 Deliverable:** Working assignment algorithm with basic UI
+**Week 3 Deliverable:** Working assignment algorithm with basic UI (completed)
 
 ---
 
-## Phase 2: Visualization & Export (Week 4)
+## Phase 2: Visualization & Export (Week 4) [in_progress]
 
 ### Schedule Visualization (Days 1-3)
-- [ ] Calendar component (day/week views)
-- [ ] Shift card components
-- [ ] Coverage indicators
-- [ ] Balance metrics display
-- [ ] Filtering capabilities
-- [ ] Responsive design implementation
-- [ ] Enhanced shift editor with drag/drop (P2, future enhancement)
+- [ ] Enhanced Calendar component (day/week/month views)
+- [ ] Advanced shift card interactions
+- [ ] Dynamic coverage indicators
+- [ ] Real-time balance metrics
+- [ ] Advanced filtering (by role, member, status)
+- [ ] Responsive mobile view for schedule
+- [ ] Persistent view preferences
 
 ### PDF Export (Days 4-5)
-- [ ] PDF generation library integration
-- [ ] Schedule export template
-- [ ] Individual assignment export
-- [ ] Export options UI
-- [ ] Client-side PDF generation
-- [ ] Download functionality
+- [ ] Advanced PDF templates (Landscape/Portrait)
+- [ ] Member-specific schedule export
+- [ ] Export with pseudonym mapping toggle
+- [ ] Batch export functionality
+- [ ] Print-optimized CSS for schedule view
 
-**Week 4 Deliverable:** Complete schedule visualization and PDF export
+**Week 4 Deliverable:** Enhanced schedule visualization and production-ready PDF export
 
 ---
 
 ## Phase 3: Admin Features & Polish (Week 5)
 
 ### Manual Adjustments (Days 1-2)
-- [ ] Swap interface UI
-- [ ] Swap validation logic
-- [ ] API: Manual swap endpoint
-- [ ] Swap confirmation flow
-- [ ] Audit logging for swaps
+- [x] Basic Swap interface UI (completed in Phase 1)
+- [x] Swap validation logic (completed in Phase 1)
+- [x] API: Manual swap endpoint (completed in Phase 1)
+- [ ] Drag-and-drop swap interface
+- [ ] Mass reassignment tool
+- [ ] Conflict resolution wizard
 
 ### Audit Trail (Days 3-4)
+- [x] Basic Audit logging (completed in Phase 1)
 - [ ] Audit log viewer UI
-- [ ] Filtering and search
-- [ ] Export audit logs
-- [ ] Action explanations
-- [ ] Timestamp formatting
+- [ ] Filtering and search for logs
+- [ ] Export audit logs (CSV/PDF)
+- [ ] Action rollback (where possible)
 
 ### Coverage Dashboard (Day 5)
-- [ ] Gap identification logic
-- [ ] Coverage indicators
-- [ ] Quick action buttons
-- [ ] Balance metric calculations
-- [ ] Visual status indicators
+- [x] Gap identification logic (completed in Phase 1)
+- [x] Status indicators (completed in Phase 1)
+- [ ] Predictive gap analysis
+- [ ] Member availability heatmap
+- [ ] Quick-fill recommendations
 
-**Week 5 Deliverable:** Full admin toolkit and audit capabilities
+**Week 5 Deliverable:** Pro-tier admin toolkit and advanced audit capabilities
 
 ---
 

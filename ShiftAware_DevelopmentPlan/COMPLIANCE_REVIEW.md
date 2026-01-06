@@ -26,6 +26,11 @@ Log of repository adherence vs. development plan. Append new entries per review.
 - Plan alignment: Phase 0 roadmap items done (schema, migration, seed, auth, Docker). Remaining are Phase 1+ features: shifts/preferences CRUD + UI, assignment algorithm (hard gender balance, core-only min shifts), coverage dashboards, manual swaps, PDF export, audit UI, config UI, monitoring/tests.
 - Compliance gaps: No FR-001..FR-007 UI/API beyond auth yet; no FR-009 audit UI; no FR-012 coverage view; pseudonym→name mapping remains external; production cloud deploy not configured (only dev compose).
 
+## 2026-01-06T18:40:00Z
+- Phase 2 branch initialized (Visualization & Export focus). ROADMAP updated to reflect Phase 1 completion and Phase 2/3 goals.
+- Design alignment: Implementers must follow `.context/260106_DESIGN_SYSTEM_1.md` (palette/typography/components) and `.context/UI_SPECIFICATION_1.md` (app shell, timeline, login/dashboard, preferences/admin).
+- Testing alignment: Use `TESTING_PLAN.md` suites; add Visualization/Export checks when features land.
+
 ## 2026-01-06T13:05:00Z
 - Auth/env handling revised: `lib/auth` now supports explicit production secrets plus opt-in dev fallbacks (`ALLOW_INSECURE_DEV_LOGIN=true` with `DEV_ADMIN_PASSWORD`/`DEV_SESSION_SECRET`) to avoid crashes during local testing while still throwing in production if secrets are absent.
 - Session validation now guards missing secrets gracefully in middleware (returns unauthorized instead of crashing) and login still surfaces misconfig via 500 with clear messaging.
