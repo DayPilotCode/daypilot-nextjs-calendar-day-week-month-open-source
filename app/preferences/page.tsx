@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { format } from "date-fns";
 
+import CalendarView from "@/components/features/Calendar/CalendarView";
+
 interface Shift {
   id: string;
   type: string;
@@ -12,7 +14,7 @@ interface Shift {
   endTime: string;
   priority: string;
   desirabilityScore: number;
-  event: { name: string };
+  event: { name: string; startDate: string };
 }
 
 interface Preference {
@@ -27,6 +29,7 @@ export default function PreferencesPage() {
   const [selectedMember, setSelectedMember] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [currentEventDate, setCurrentEventDate] = useState<string>();
 
   useEffect(() => {
     loadData();
@@ -42,6 +45,9 @@ export default function PreferencesPage() {
       if (shiftsRes.ok) {
         const shiftsData = await shiftsRes.json();
         setShifts(shiftsData);
+        if (shiftsData.length > 0) {
+          setCurrentEventDate(shiftsData[0].startTime.split("T")[0]);
+        }
       }
 
       if (membersRes.ok) {
@@ -62,11 +68,16 @@ export default function PreferencesPage() {
     const newSelected = new Map(selectedShifts);
     if (newSelected.has(shiftId)) {
       newSelected.delete(shiftId);
+      // Re-index remaining priorities
+      const remaining = Array.from(newSelected.entries())
+        .sort((a, b) => a[1] - b[1])
+        .map(([id], index) => [id, index + 1] as [string, number]);
+      setSelectedShifts(new Map(remaining));
     } else {
       const priority = newSelected.size + 1;
       newSelected.set(shiftId, priority);
+      setSelectedShifts(newSelected);
     }
-    setSelectedShifts(newSelected);
   }
 
   function updatePriority(shiftId: string, priority: number) {
@@ -121,105 +132,102 @@ export default function PreferencesPage() {
     return <div className="p-8">Loading...</div>;
   }
 
-  const sortedShifts = [...shifts].sort(
-    (a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
-  );
+  const selectedList = shifts
+    .filter((s) => selectedShifts.has(s.id))
+    .sort((a, b) => (selectedShifts.get(a.id) || 0) - (selectedShifts.get(b.id) || 0));
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold text-slate-50">Shift Preferences</h1>
-
-      <Card>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              Team Member
-            </label>
-            <select
-              value={selectedMember}
-              onChange={(e) => setSelectedMember(e.target.value)}
-              className="w-full rounded-lg border border-shift-border bg-shift-surface px-4 py-2 text-slate-100"
-            >
-              <option value="">Select member</option>
-              {members.map((member) => (
-                <option key={member.id} value={member.id}>
-                  {member.alias}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {sortedShifts.map((shift) => {
-              const isSelected = selectedShifts.has(shift.id);
-              const priority = selectedShifts.get(shift.id);
-
-              return (
-                <div
-                  key={shift.id}
-                  onClick={() => toggleShift(shift.id)}
-                  className={`cursor-pointer rounded-lg border p-4 transition-colors ${
-                    isSelected
-                      ? "border-shift-accent bg-shift-accent/10"
-                      : "border-shift-border bg-shift-surface hover:border-shift-accent/50"
-                  }`}
-                >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="font-semibold text-slate-50">
-                        {shift.type.replace("_", " ")}
-                      </h3>
-                      <p className="text-sm text-slate-400 mt-1">
-                        {format(new Date(shift.startTime), "MMM d, HH:mm")} -{" "}
-                        {format(new Date(shift.endTime), "HH:mm")}
-                      </p>
-                      <p className="text-xs text-slate-500 mt-1">
-                        {shift.event.name} • Score: {shift.desirabilityScore}
-                      </p>
-                    </div>
-                    {isSelected && (
-                      <span className="text-shift-accent font-bold">
-                        #{priority}
-                      </span>
-                    )}
-                  </div>
-                  {isSelected && (
-                    <div className="mt-3">
-                      <label className="block text-xs text-slate-400 mb-1">
-                        Priority (1-5)
-                      </label>
-                      <input
-                        type="number"
-                        min="1"
-                        max="5"
-                        value={priority}
-                        onChange={(e) =>
-                          updatePriority(shift.id, parseInt(e.target.value))
-                        }
-                        onClick={(e) => e.stopPropagation()}
-                        className="w-full rounded border border-shift-border bg-shift-surface px-2 py-1 text-sm text-slate-100"
-                      />
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="flex items-center justify-between pt-4 border-t border-shift-border">
-            <p className="text-sm text-slate-400">
-              Selected: {selectedShifts.size} shifts (minimum 2 required)
-            </p>
-            <Button
-              onClick={handleSubmit}
-              disabled={selectedShifts.size < 2 || !selectedMember || submitting}
-            >
-              {submitting ? "Submitting..." : "Submit Preferences"}
-            </Button>
-          </div>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold text-slate-50">Shift Preferences</h1>
+        <div className="flex items-center space-x-4">
+          <select
+            value={selectedMember}
+            onChange={(e) => setSelectedMember(e.target.value)}
+            className="rounded-lg border border-shift-border bg-shift-surface px-4 py-2 text-slate-100 text-sm"
+          >
+            <option value="">Select member</option>
+            {members.map((member) => (
+              <option key={member.id} value={member.id}>
+                {member.alias}
+              </option>
+            ))}
+          </select>
+          <Button
+            onClick={handleSubmit}
+            disabled={selectedShifts.size < 2 || !selectedMember || submitting}
+            className="text-sm"
+          >
+            {submitting ? "Submitting..." : "Submit Selection"}
+          </Button>
         </div>
-      </Card>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[700px]">
+        <div className="lg:col-span-3 flex flex-col">
+          <Card className="flex-grow p-0 overflow-hidden">
+            <CalendarView
+              shifts={shifts}
+              onShiftClick={toggleShift}
+              selectedShiftIds={new Set(selectedShifts.keys())}
+              startDate={currentEventDate}
+            />
+          </Card>
+        </div>
+
+        <div className="lg:col-span-1 space-y-4 overflow-y-auto">
+          <Card className="h-full flex flex-col">
+            <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">
+              Your Selection ({selectedShifts.size})
+            </h2>
+            
+            {selectedList.length === 0 ? (
+              <div className="flex-grow flex flex-col items-center justify-center text-center p-4">
+                <p className="text-slate-500 text-sm italic">
+                  Click shifts on the calendar to select them
+                </p>
+              </div>
+            ) : (
+              <div className="flex-grow space-y-3">
+                {selectedList.map((shift) => (
+                  <div
+                    key={shift.id}
+                    className="p-3 rounded-lg border border-shift-border bg-shift-surface/50 group hover:border-shift-accent/50 transition-colors"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="text-xs">
+                        <p className="font-bold text-slate-200">
+                          {shift.type.replace("_", " ")}
+                        </p>
+                        <p className="text-slate-400">
+                          {format(new Date(shift.startTime), "MMM d, HH:mm")}
+                        </p>
+                      </div>
+                      <span className="text-xs font-bold text-shift-accent">
+                        #{selectedShifts.get(shift.id)}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => toggleShift(shift.id)}
+                      className="mt-2 text-[10px] text-red-400 hover:text-red-300 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+            
+            <div className="mt-4 pt-4 border-t border-shift-border">
+              <p className="text-[10px] text-slate-500 italic">
+                * Select at least 2 core shifts
+              </p>
+            </div>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }
+
 

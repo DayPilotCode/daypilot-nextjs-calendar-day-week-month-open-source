@@ -13,4 +13,12 @@
     - phase1: updated home page with Phase 1 completion status and quick links
     - phase1: algorithm supports preference matching, workload balance, experience distribution, gender balance (hard constraint), core shift coverage
     - phase1: all APIs include authentication checks, error handling, and audit logging
+    - phase1: re-aligned UI/UX with calendar format using DayPilot Lite React (FR-001, FR-005)
+    - phase1: re-implemented /preferences with a multi-select calendar interface and priority tracking
+    - phase1: implemented /schedule with Day/Week views showing staff coverage and member assignments
+    - phase1: implemented assignment detail modal surfacing algorithm rationales and scores (FR-004)
+    - phase1: implemented manual swap API (/api/assignments/swap) with audit logging (FR-006)
+    - phase1: implemented Coverage Gaps Dashboard (/admin/coverage) with status indicators (FR-012)
+    - phase1: implemented client-side PDF export for full schedule and pseudonym mapping templates (FR-007, FR-008)
+
 

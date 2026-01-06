@@ -1,0 +1,32 @@
+.calendar-container {
+  flex-grow: 1;
+  background-color: #0b1222;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid #1e293b;
+}
+
+/* DayPilot Dark Mode Overrides */
+.calendar_default_main {
+  background-color: #0b1222 !important;
+  color: #e2e8f0 !important;
+  border-color: #1e293b !important;
+}
+
+.calendar_default_rowheader, .calendar_default_corner, .calendar_default_colheader {
+  background-color: #0d1629 !important;
+  color: #94a3b8 !important;
+  border-color: #1e293b !important;
+}
+
+.calendar_default_cell {
+  background-color: #0b1222 !important;
+  border-color: #1e293b !important;
+}
+
+.calendar_default_event_inner {
+  border-radius: 4px !important;
+  padding: 4px !important;
+  font-size: 0.75rem !important;
+}
+

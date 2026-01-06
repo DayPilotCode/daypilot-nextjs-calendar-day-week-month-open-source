@@ -37,6 +37,19 @@ Log of repository adherence vs. development plan. Append new entries per review.
 - `.env.example` could not be modified due to repo ignore rules; pending: add required entries (ADMIN_PASSWORD_HASH, SESSION_SECRET) and optional local-only fallbacks (ALLOW_INSECURE_DEV_LOGIN=false by default, DEV_ADMIN_PASSWORD/DEV_SESSION_SECRET) plus DATABASE_URL/SESSION_TIMEOUT_MINUTES.
 - Best practice: forbid ALLOW_INSECURE_DEV_LOGIN in any shared/staging/prod; gate CI/E2E to fail when secrets missing; use `npm run generate-hash` to produce bcrypt hash for ADMIN_PASSWORD_HASH; set a 32+ char random SESSION_SECRET.
 
-## 2026-01-06T13:45:00Z
-- Added `MANUAL_ENV_INSTRUCTIONS.txt` (root) to capture env edits that can’t be applied automatically due to ignore rules. It lists required vars (ADMIN_PASSWORD_HASH, SESSION_SECRET, DATABASE_URL, SESSION_TIMEOUT_MINUTES) and dev-only fallbacks (ALLOW_INSECURE_DEV_LOGIN=false, DEV_ADMIN_PASSWORD, DEV_SESSION_SECRET). Delete after manual update.
-- Compliance reminder: ensure production/staging never enable ALLOW_INSECURE_DEV_LOGIN; secrets must be provided via deployment secret store; compose/local should align DATABASE_URL with db service (`postgresql://shiftaware:shiftaware@db:5432/shiftaware_dev`).
+## 2026-01-06T15:30:00Z
+- **Phase 1 Review**: Critical divergence in UI/UX and feature completeness vs. Ground Truth.
+- **UI/UX Divergence (Critical)**:
+  - **FR-001 & FR-005**: Both require a **"calendar format"** for preference entry and schedule viewing. Current implementation uses generic card grids/lists.
+  - **Missing Views**: FR-005 Day/Week/Grid views are completely absent.
+  - **Design Tone**: User feedback indicates current design does not match expectations. Plan calls for "Clean, minimal interface" with "Intuitive calendar format".
+- **Functional Gaps**:
+  - **FR-004 (Algorithm Transparency)**: Explanations are generated but not displayed in the UI. No mechanism for "Admin to see alternative assignments".
+  - **FR-006 (Manual Swaps)**: Not implemented in API or UI.
+  - **FR-012 (Coverage Gaps)**: No dedicated dashboard view or visual indicators (Red/Yellow/Green) as required.
+  - **FR-007 (PDF Export)**: Not started.
+- **Privacy Compliance**: While using aliases, the UI lacks the "Secure conversion process" and "Pseudonym-to-name mapping" handling mandated by FR-008.
+- **Adherence Plan**:
+  - **Realignment Required**: Re-implement `/preferences` and `/schedule` (currently dashboard/events) using a proper Calendar component (DayPilot Lite or similar as per original scaffold).
+  - **Feature Catch-up**: Prioritize manual swaps (FR-006) and coverage indicators (FR-012) to meet Phase 1/2 transition requirements.
+  - **Transparency**: Update UI to surface algorithm scores and decision rationales (FR-004).

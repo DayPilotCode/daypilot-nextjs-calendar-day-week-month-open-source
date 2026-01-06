@@ -17,10 +17,15 @@ interface TeamMember {
   isActive: boolean;
 }
 
+import { useState, useEffect } from "react";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+
 export default function MembersPage() {
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const [formData, setFormData] = useState({
     alias: "",
     avatarId: "🐺",
@@ -44,6 +49,37 @@ export default function MembersPage() {
       console.error("Failed to load members:", error);
     } finally {
       setLoading(false);
+    }
+  }
+
+  function handleExportMapping() {
+    setIsExporting(true);
+    try {
+      const doc = jsPDF();
+      doc.setFontSize(18);
+      doc.text("Pseudonym Conversion Table", 14, 20);
+      
+      doc.setFontSize(10);
+      doc.setTextColor(100);
+      doc.text("CONFIDENTIAL - FOR INTERNAL USE ONLY", 14, 28);
+      doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 34);
+
+      const tableData = members.map(m => [m.avatarId, m.alias, "____________________"]);
+
+      autoTable(doc, {
+        startY: 40,
+        head: [["Avatar", "Alias (System Name)", "Real Name (Fill Manually)"]],
+        body: tableData,
+        headStyles: { fillColor: [30, 41, 59] },
+        styles: { fontSize: 10, cellPadding: 5 },
+      });
+
+      doc.save("ShiftAware_Pseudonym_Mapping_Template.pdf");
+    } catch (error) {
+      console.error("Export failed:", error);
+      alert("Failed to generate mapping template");
+    } finally {
+      setIsExporting(false);
     }
   }
 
@@ -84,9 +120,19 @@ export default function MembersPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-slate-50">Team Members</h1>
-        <Button onClick={() => setShowForm(!showForm)}>
-          {showForm ? "Cancel" : "Add Member"}
-        </Button>
+        <div className="flex items-center space-x-3">
+          <Button 
+            variant="secondary" 
+            onClick={handleExportMapping} 
+            disabled={isExporting || members.length === 0}
+            className="text-sm"
+          >
+            {isExporting ? "Generating..." : "Export Mapping Template"}
+          </Button>
+          <Button onClick={() => setShowForm(!showForm)}>
+            {showForm ? "Cancel" : "Add Member"}
+          </Button>
+        </div>
       </div>
 
       {showForm && (

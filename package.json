@@ -15,8 +15,11 @@
     "db:studio": "prisma studio"
   },
   "dependencies": {
+    "@daypilot/daypilot-lite-react": "^5.2.0",
     "@prisma/client": "^5.18.0",
     "date-fns": "^3.6.0",
+    "jspdf": "^4.0.0",
+    "jspdf-autotable": "^5.0.7",
     "next": "15.1.2",
     "prisma": "^5.18.0",
     "react": "^19.0.0",
