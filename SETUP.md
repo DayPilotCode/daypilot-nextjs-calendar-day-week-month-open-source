@@ -22,7 +22,8 @@ DATABASE_URL=postgresql://postgres:postgres@localhost:5433/appdb
 # Authentication
 # Generate hash with: npm run generate-hash <your_password>
 # Example: npm run generate-hash mypassword123
-AUTH_PASSWORD_HASH=
+# IMPORTANT: Always quote bcrypt hashes (they start with $ which dotenv interprets as variables)
+ADMIN_PASSWORD_HASH="$2a$10$..."  # Replace with your generated hash, keep the quotes!
 
 # Application
 NODE_ENV=development

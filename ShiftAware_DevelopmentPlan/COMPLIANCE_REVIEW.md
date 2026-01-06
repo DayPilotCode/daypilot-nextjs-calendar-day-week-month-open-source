@@ -26,3 +26,17 @@ Log of repository adherence vs. development plan. Append new entries per review.
 - Plan alignment: Phase 0 roadmap items done (schema, migration, seed, auth, Docker). Remaining are Phase 1+ features: shifts/preferences CRUD + UI, assignment algorithm (hard gender balance, core-only min shifts), coverage dashboards, manual swaps, PDF export, audit UI, config UI, monitoring/tests.
 - Compliance gaps: No FR-001..FR-007 UI/API beyond auth yet; no FR-009 audit UI; no FR-012 coverage view; pseudonym→name mapping remains external; production cloud deploy not configured (only dev compose).
 
+## 2026-01-06T13:05:00Z
+- Auth/env handling revised: `lib/auth` now supports explicit production secrets plus opt-in dev fallbacks (`ALLOW_INSECURE_DEV_LOGIN=true` with `DEV_ADMIN_PASSWORD`/`DEV_SESSION_SECRET`) to avoid crashes during local testing while still throwing in production if secrets are absent.
+- Session validation now guards missing secrets gracefully in middleware (returns unauthorized instead of crashing) and login still surfaces misconfig via 500 with clear messaging.
+- Hashing remains bcrypt; no hashes or passwords are logged. Defaults require real `ADMIN_PASSWORD_HASH`/`SESSION_SECRET` for prod; dev fallback emits warnings.
+- Recommended next steps: keep `ALLOW_INSECURE_DEV_LOGIN` off in all shared/staging/prod; add startup health to assert secrets present when `NODE_ENV=production`; add E2E auth test that fails if secrets unset; document `generate-password-hash.js` use in `.env.example`.
+
+## 2026-01-06T13:25:00Z
+- Added health check `/api/health` that returns 500 in production if `ADMIN_PASSWORD_HASH` or `SESSION_SECRET` are missing; includes `missingEnv` in response for diagnostics.
+- `.env.example` could not be modified due to repo ignore rules; pending: add required entries (ADMIN_PASSWORD_HASH, SESSION_SECRET) and optional local-only fallbacks (ALLOW_INSECURE_DEV_LOGIN=false by default, DEV_ADMIN_PASSWORD/DEV_SESSION_SECRET) plus DATABASE_URL/SESSION_TIMEOUT_MINUTES.
+- Best practice: forbid ALLOW_INSECURE_DEV_LOGIN in any shared/staging/prod; gate CI/E2E to fail when secrets missing; use `npm run generate-hash` to produce bcrypt hash for ADMIN_PASSWORD_HASH; set a 32+ char random SESSION_SECRET.
+
+## 2026-01-06T13:45:00Z
+- Added `MANUAL_ENV_INSTRUCTIONS.txt` (root) to capture env edits that can’t be applied automatically due to ignore rules. It lists required vars (ADMIN_PASSWORD_HASH, SESSION_SECRET, DATABASE_URL, SESSION_TIMEOUT_MINUTES) and dev-only fallbacks (ALLOW_INSECURE_DEV_LOGIN=false, DEV_ADMIN_PASSWORD, DEV_SESSION_SECRET). Delete after manual update.
+- Compliance reminder: ensure production/staging never enable ALLOW_INSECURE_DEV_LOGIN; secrets must be provided via deployment secret store; compose/local should align DATABASE_URL with db service (`postgresql://shiftaware:shiftaware@db:5432/shiftaware_dev`).

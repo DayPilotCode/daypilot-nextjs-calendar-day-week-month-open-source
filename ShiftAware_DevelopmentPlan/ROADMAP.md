@@ -148,6 +148,7 @@
 - [ ] Performance testing
 - [ ] Security audit
 - [ ] Browser compatibility testing
+- [ ] Execute suites from `TESTING_PLAN.md` (start with smoke + auth, extend as features land)
 
 ### Documentation (Day 4)
 - [ ] API documentation

@@ -4,21 +4,74 @@ import { cookies } from "next/headers";
 
 const SESSION_COOKIE_NAME = "shiftaware_session";
 const DEFAULT_TTL_MINUTES = Number(process.env.SESSION_TIMEOUT_MINUTES ?? "60");
+const IS_PROD = process.env.NODE_ENV === "production";
 
-const SESSION_SECRET = process.env.SESSION_SECRET?.trim();
-const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH?.trim();
+let DEV_HASH_CACHE: string | null = null;
+let DEV_SESSION_SECRET: string | null = null;
 
-// Fail fast at module load if critical envs are missing so startup, not login, surfaces misconfiguration.
-if (!SESSION_SECRET) {
+const getSessionSecret = (): string => {
+  const secret = process.env.SESSION_SECRET?.trim();
+  if (secret) return secret;
+
+  const allowInsecure = process.env.ALLOW_INSECURE_DEV_LOGIN === "true";
+  const fallback =
+    process.env.DEV_SESSION_SECRET?.trim() || "dev-session-secret-change-me";
+
+  if (allowInsecure && !IS_PROD) {
+    if (!DEV_SESSION_SECRET) {
+      DEV_SESSION_SECRET = fallback;
+      console.warn(
+        "[auth] Using insecure dev session secret; set SESSION_SECRET for real deployments."
+      );
+    }
+    return DEV_SESSION_SECRET;
+  }
+
   throw new Error("SESSION_SECRET environment variable is not set");
-}
+};
 
-if (!ADMIN_PASSWORD_HASH) {
+const getStoredPasswordHash = (): string => {
+  const hash = process.env.ADMIN_PASSWORD_HASH?.trim();
+  
+  if (hash) {
+    // Validate hash format and length
+    if (hash.length !== 60) {
+      throw new Error(
+        `ADMIN_PASSWORD_HASH has invalid length: ${hash.length} (expected 60). ` +
+        `Hash may be truncated. Ensure it's quoted in .env file: ADMIN_PASSWORD_HASH="${hash}..."`
+      );
+    }
+    
+    if (!hash.startsWith("$2a$") && !hash.startsWith("$2b$") && !hash.startsWith("$2y$")) {
+      throw new Error(
+        `ADMIN_PASSWORD_HASH has invalid format. Expected bcrypt hash starting with $2a$, $2b$, or $2y$, ` +
+        `got: ${hash.substring(0, Math.min(10, hash.length))}... (length: ${hash.length})`
+      );
+    }
+    
+    // Debug logging in development
+    if (!IS_PROD) {
+      console.log(`[auth] Loaded password hash: length=${hash.length}, prefix=${hash.substring(0, 7)}`);
+    }
+    
+    return hash;
+  }
+
+  const allowInsecure = process.env.ALLOW_INSECURE_DEV_LOGIN === "true";
+  const devPassword = process.env.DEV_ADMIN_PASSWORD || "changeme";
+
+  if (allowInsecure && !IS_PROD) {
+    if (!DEV_HASH_CACHE) {
+      DEV_HASH_CACHE = bcrypt.hashSync(devPassword, 10);
+      console.warn(
+        "[auth] Using insecure dev password fallback; set ADMIN_PASSWORD_HASH for real deployments."
+      );
+    }
+    return DEV_HASH_CACHE;
+  }
+
   throw new Error("ADMIN_PASSWORD_HASH environment variable is not set");
-}
-
-const getSessionSecret = (): string => SESSION_SECRET;
-const getStoredPasswordHash = (): string => ADMIN_PASSWORD_HASH;
+};
 
 const signPayload = (payload: string): string => {
   const secret = getSessionSecret();
@@ -37,7 +90,15 @@ const validateSessionValue = (value?: string): boolean => {
   const payload = value.slice(0, lastDot);
   const signature = value.slice(lastDot + 1);
 
-  const expected = crypto.createHmac("sha256", SESSION_SECRET).update(payload).digest("hex");
+  let secret: string;
+  try {
+    secret = getSessionSecret();
+  } catch (error) {
+    console.error("Session validation failed (secret missing):", error);
+    return false;
+  }
+
+  const expected = crypto.createHmac("sha256", secret).update(payload).digest("hex");
 
   if (signature.length !== expected.length) return false;
   if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) return false;

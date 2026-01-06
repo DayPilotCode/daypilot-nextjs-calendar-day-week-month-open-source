@@ -16,6 +16,8 @@ if (!password) {
 const hash = bcrypt.hashSync(password, 10);
 console.log('\nPassword hash generated:');
 console.log(hash);
-console.log('\nAdd this to your .env file:');
-console.log(`ADMIN_PASSWORD_HASH=${hash}\n`);
+console.log('\nAdd this to your .env.local file (IMPORTANT: quotes are required):');
+console.log(`ADMIN_PASSWORD_HASH="${hash}"`);
+console.log('\nNote: The quotes are required because bcrypt hashes start with $,');
+console.log('      which dotenv interprets as variable expansion without quotes.\n');
 

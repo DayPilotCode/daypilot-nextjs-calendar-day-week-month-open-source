@@ -14,6 +14,16 @@ export async function POST(request: NextRequest) {
     }
 
     const isValid = await verifyLogin(password);
+    
+    // Enhanced logging for debugging hash issues
+    const hash = process.env.ADMIN_PASSWORD_HASH?.trim();
+    console.log("login attempt", {
+      isValid,
+      pwdLen: password.length,
+      hashPrefix: hash?.substring(0, 12) || "missing",
+      hashLen: hash?.length || 0,
+      hashFormatValid: hash ? (hash.length === 60 && (hash.startsWith("$2a$") || hash.startsWith("$2b$") || hash.startsWith("$2y$"))) : false,
+    });
 
     if (!isValid) {
       return NextResponse.json(
