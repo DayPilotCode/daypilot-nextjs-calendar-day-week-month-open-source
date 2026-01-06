@@ -52,7 +52,7 @@ const coverageLegend: Record<CoverageState, { label: string; badge: string; bg: 
 export default function SchedulePage() {
   const [shifts, setShifts] = useState<Shift[]>([]);
   const [loading, setLoading] = useState(true);
-  const [viewType, setViewType] = useState<"Day" | "Week" | "Month">("Week");
+  const [viewType, setViewType] = useState<"Day" | "Week" | "Grid">("Week");
   const [currentEventDate, setCurrentEventDate] = useState<string>();
   const [selectedShift, setSelectedShift] = useState<Shift | null>(null);
   const [isExporting, setIsExporting] = useState(false);
@@ -66,7 +66,7 @@ export default function SchedulePage() {
 
   useEffect(() => {
     const savedView = localStorage.getItem("shiftaware:schedule:view");
-    if (savedView === "Day" || savedView === "Week" || savedView === "Month") {
+    if (savedView === "Day" || savedView === "Week" || savedView === "Grid") {
       setViewType(savedView);
     }
     loadSchedule();
@@ -190,7 +190,7 @@ export default function SchedulePage() {
         </div>
         <div className="flex items-center gap-2">
           <div className="bg-white border border-gray-200 rounded-xl p-1 flex shadow-sm">
-            {(["Day", "Week", "Month"] as const).map((option) => (
+            {(["Day", "Week", "Grid"] as const).map((option) => (
               <button
                 key={option}
                 onClick={() => setViewType(option)}

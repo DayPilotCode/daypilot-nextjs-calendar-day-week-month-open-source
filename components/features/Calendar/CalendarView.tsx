@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { DayPilot, DayPilotCalendar } from "@daypilot/daypilot-lite-react";
-import { eachDayOfInterval, endOfMonth, endOfWeek, format, isSameDay, startOfMonth, startOfWeek } from "date-fns";
+import { format, isSameDay } from "date-fns";
 import "./CalendarView.css";
 
 interface CalendarViewProps {
@@ -10,7 +10,7 @@ interface CalendarViewProps {
   onShiftClick?: (shiftId: string) => void;
   onAssignmentClick?: (assignment: any) => void;
   selectedShiftIds?: Set<string>;
-  viewType?: "Day" | "Week" | "Month";
+  viewType?: "Day" | "Week" | "Grid";
   startDate?: string;
   showAssignments?: boolean;
 }
@@ -114,7 +114,7 @@ const CalendarView = ({
   });
 
   useEffect(() => {
-    if (calendar && viewType !== "Month") {
+    if (calendar && viewType !== "Grid") {
       calendar.update({ 
         startDate,
         viewType: viewType === "Day" ? "Day" : "Week",
@@ -144,21 +144,17 @@ const CalendarView = ({
     return new Date();
   }, [startDate, shifts]);
 
-  const monthDays = useMemo(
-    () =>
-      eachDayOfInterval({
-        start: startOfWeek(startOfMonth(baseDate), { weekStartsOn: 1 }),
-        end: endOfWeek(endOfMonth(baseDate), { weekStartsOn: 1 }),
-      }),
-    [baseDate]
-  );
-
-  const monthRows = useMemo(() => {
-    return monthDays.map((day) => {
-      const dayShifts = shifts.filter((shift) => isSameDay(new Date(shift.startTime), day));
-      return { day, shifts: dayShifts };
+  const members = useMemo(() => {
+    const memberMap = new Map<string, any>();
+    shifts.forEach(shift => {
+      shift.assignments?.forEach((a: any) => {
+        if (a.teamMember) {
+          memberMap.set(a.teamMember.id, a.teamMember);
+        }
+      });
     });
-  }, [monthDays, shifts]);
+    return Array.from(memberMap.values()).sort((a, b) => a.alias.localeCompare(b.alias));
+  }, [shifts]);
 
   const getCoverage = (shift: any): CoverageState => {
     const filled = shift.assignments?.length || 0;
@@ -167,57 +163,75 @@ const CalendarView = ({
     return "empty";
   };
 
-  const renderMonthView = () => (
-    <div className="calendar-month-grid">
-      {monthRows.map(({ day, shifts: dayShifts }) => {
-        const isCurrentMonth = day.getMonth() === baseDate.getMonth();
-        return (
-          <div key={day.toISOString()} className={`month-cell ${isCurrentMonth ? "" : "muted"}`}>
-            <div className="month-cell-header">
-              <span className="month-cell-day">{format(day, "d")}</span>
-              <span className="month-cell-weekday">{format(day, "EEE")}</span>
-            </div>
-            <div className="month-cell-body">
-              {dayShifts.length === 0 ? (
-                <div className="empty-slot">No shifts</div>
-              ) : (
-                dayShifts.map((shift) => {
-                  const status = getCoverage(shift);
-                  const style = coverageStyles[status];
-                  const filled = shift.assignments?.length || 0;
-                  return (
-                    <button
-                      key={shift.id}
-                      onClick={() => {
-                        if (showAssignments && onAssignmentClick) {
-                          onAssignmentClick(shift);
-                        } else if (onShiftClick) {
-                          onShiftClick(shift.id);
-                        }
-                      }}
-                      className={`month-shift ${style.bg} ${style.border}`}
-                    >
-                      <div className="month-shift-top">
-                        <span className="month-shift-type">{shift.type.replace("_", " ")}</span>
-                        <span className={`month-shift-badge ${style.badge}`}></span>
-                      </div>
-                      <div className="month-shift-time">{format(new Date(shift.startTime), "HH:mm")} - {format(new Date(shift.endTime), "HH:mm")}</div>
-                      <div className={`month-shift-fill ${style.text}`}>{filled}/{shift.capacity} filled</div>
-                    </button>
-                  );
-                })
-              )}
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
+  const renderGridView = () => {
+    return (
+      <div className="calendar-grid-view overflow-auto h-full bg-white">
+        <table className="w-full border-collapse">
+          <thead className="sticky top-0 z-20 bg-gray-50 shadow-sm">
+            <tr>
+              <th className="p-4 text-left text-xs font-black uppercase tracking-widest text-gray-500 border-b border-r sticky left-0 bg-gray-50 z-30">
+                Team Member
+              </th>
+              {shifts
+                .sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
+                .map((shift) => (
+                  <th key={shift.id} className="p-4 text-center border-b border-r min-w-[140px]">
+                    <div className="text-[10px] font-black uppercase tracking-tighter text-gray-400 mb-1">
+                      {format(new Date(shift.startTime), "MMM d")}
+                    </div>
+                    <div className="text-xs font-bold text-gray-700 whitespace-nowrap">
+                      {format(new Date(shift.startTime), "HH:mm")} - {format(new Date(shift.endTime), "HH:mm")}
+                    </div>
+                    <div className="text-[9px] font-bold text-primary-500 mt-1">
+                      {shift.type.replace("_", " ")}
+                    </div>
+                  </th>
+                ))}
+            </tr>
+          </thead>
+          <tbody>
+            {members.map((member) => (
+              <tr key={member.id} className="hover:bg-gray-50 transition-colors">
+                <td className="p-4 border-b border-r font-bold text-sm text-gray-900 sticky left-0 bg-white z-10 shadow-[2px_0_4px_rgba(0,0,0,0.02)]">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xl">{member.avatarId}</span>
+                    <span>{member.alias}</span>
+                  </div>
+                </td>
+                {shifts
+                  .sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
+                  .map((shift) => {
+                    const isAssigned = shift.assignments?.some((a: any) => a.teamMember.id === member.id);
+                    const status = getCoverage(shift);
+                    const style = coverageStyles[status];
+                    
+                    return (
+                      <td key={`${member.id}-${shift.id}`} className="p-2 border-b border-r text-center">
+                        {isAssigned ? (
+                          <div 
+                            onClick={() => onAssignmentClick?.(shift)}
+                            className={`mx-auto w-10 h-10 rounded-xl ${style.bg} ${style.border} border flex items-center justify-center cursor-pointer hover:scale-110 transition-transform shadow-sm`}
+                          >
+                            <span className="text-lg">✓</span>
+                          </div>
+                        ) : (
+                          <div className="text-gray-100 text-xs font-black select-none">···</div>
+                        )}
+                      </td>
+                    );
+                  })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
 
   return (
     <div className="calendar-container">
-      {viewType === "Month" ? (
-        renderMonthView()
+      {viewType === "Grid" ? (
+        renderGridView()
       ) : (
         <DayPilotCalendar
           {...config}
