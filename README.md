@@ -1,11 +1,30 @@
-# Next.js Calendar with Day/Week/Month Views (Open-Source)
+# ShiftAware (Phase 0)
 
-This is the code repository for the [Next.js Calendar with Day/Week/Month Views (Open-Source)](https://code.daypilot.org/62886/next-js-calendar-day-week-month-open-source) tutorial by [DayPilot](https://www.daypilot.org/).
+Privacy-first, single-password shift management app. This repo now follows `ShiftAware_DevelopmentPlan` as the source of truth.
 
-## Description
-- Includes [DayPilot Lite for JavaScript](https://javascript.daypilot.org/open-source/) - open-source calendar/scheduling components for JavaScript/Angular/React/Vue (Apache License 2.0).
-- This project was generated using the [DayPilot UI Builder](https://builder.daypilot.org/), an online tool for configuring DayPilot components and generating starter projects.
+## Canonical docs
+- `ShiftAware_DevelopmentPlan/README.md` (index to plan)
+- `ShiftAware_DevelopmentPlan/ROADMAP.md` (phase breakdown)
+- `ShiftAware_DevelopmentPlan/DATABASE_SCHEMA.md` (data model)
+
+## Dev quickstart (Phase 0)
+```bash
+npm install
+cp .env.example .env.local   # set ADMIN_PASSWORD_HASH + SESSION_SECRET
+docker compose up -d db      # Postgres on host 45432 -> container 5432
+npx prisma migrate dev --name init
+npx prisma db seed
+npm run dev                  # app on host 43000 -> container 3000
+```
+
+## Ports (host → container)
+- App: `43000 -> 3000`
+- Postgres: `45432 -> 5432`
+- Optional python compute (future): `43010 -> 8000`
+
+## Auth
+- Single shared password (`ADMIN_PASSWORD_HASH` in env)
+- Signed HTTP-only session cookie (`SESSION_SECRET`, 60 min default)
 
 ## License
-- The code of this tutorial is licensed under Apache License 2.0.
-- This tutorial may include third-party libraries available under their respective licenses.
+- Apache-2.0 (see `LICENSE`)

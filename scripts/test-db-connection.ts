@@ -1,52 +1,51 @@
 #!/usr/bin/env tsx
 /**
- * Test script to verify database connection and schema
+ * Test script to verify Prisma connectivity and core tables.
  * Run with: npx tsx scripts/test-db-connection.ts
  */
 
-import { query, closePool } from '../lib/db';
+import { prisma } from "../lib/db";
 
 async function testConnection() {
-  console.log('Testing database connection...\n');
+  console.log("Testing database connection with Prisma...\n");
 
   try {
-    // Test basic connection
-    const result = await query('SELECT NOW() as current_time, version() as pg_version');
-    console.log('✓ Database connection successful');
-    console.log(`  Current time: ${result.rows[0].current_time}`);
-    console.log(`  PostgreSQL version: ${result.rows[0].pg_version.split(' ')[0]} ${result.rows[0].pg_version.split(' ')[1]}\n`);
+    const [{ current_time, pg_version }] = await prisma.$queryRaw<
+      { current_time: Date; pg_version: string }[]
+    >`SELECT NOW() as current_time, version() as pg_version`;
 
-    // Test tables exist
-    const tables = ['people', 'shifts', 'shift_preferences', 'shift_assignments', 'audit_log'];
-    console.log('Checking tables...');
-    
-    for (const table of tables) {
-      const tableCheck = await query(
-        `SELECT EXISTS (
-          SELECT FROM information_schema.tables 
-          WHERE table_schema = 'public' 
-          AND table_name = $1
-        )`,
-        [table]
-      );
-      
-      if (tableCheck.rows[0].exists) {
-        console.log(`  ✓ Table '${table}' exists`);
-        
-        // Count rows
-        const countResult = await query(`SELECT COUNT(*) as count FROM ${table}`);
-        console.log(`    Rows: ${countResult.rows[0].count}`);
-      } else {
-        console.log(`  ✗ Table '${table}' does NOT exist`);
+    console.log("✓ Database connection successful");
+    console.log(`  Current time: ${current_time.toISOString()}`);
+    console.log(`  PostgreSQL version: ${pg_version.split(" ")[1]}\n`);
+
+    const models: Array<keyof typeof prisma> = [
+      "teamMember",
+      "event",
+      "shift",
+      "shiftPreference",
+      "assignment",
+      "auditLog",
+      "eventConfig",
+      "systemConfig",
+    ];
+
+    for (const model of models) {
+      const repository = (prisma as any)[model];
+      if (!repository?.count) {
+        console.log(`  ✗ Model '${String(model)}' not found on Prisma client`);
+        continue;
       }
+
+      const count = await repository.count();
+      console.log(`  ✓ ${String(model)} -> ${count} rows`);
     }
 
-    console.log('\n✓ All checks passed!');
+    console.log("\n✓ All checks passed!");
   } catch (error) {
-    console.error('✗ Database connection failed:', error);
+    console.error("✗ Database connection failed:", error);
     process.exit(1);
   } finally {
-    await closePool();
+    await prisma.$disconnect();
   }
 }
 

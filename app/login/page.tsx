@@ -49,7 +49,7 @@ export default function LoginPage() {
       // Redirect to original page or home
       router.push(from);
       router.refresh();
-    } catch (err) {
+    } catch {
       setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);
@@ -57,37 +57,19 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      minHeight: '100vh',
-      backgroundColor: '#f5f5f5',
-    }}>
-      <div style={{
-        backgroundColor: 'white',
-        padding: '2rem',
-        borderRadius: '8px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-        width: '100%',
-        maxWidth: '400px',
-      }}>
-        <h1 style={{
-          marginBottom: '1.5rem',
-          fontSize: '1.5rem',
-          fontWeight: 'bold',
-          textAlign: 'center',
-        }}>
-          Shift Planning Login
-        </h1>
+    <div className="flex min-h-[70vh] items-center justify-center">
+      <div className="w-full max-w-md rounded-xl border border-shift-border bg-[#0d1629] p-8 shadow-card">
+        <div className="mb-6 space-y-1">
+          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Access</p>
+          <h1 className="text-xl font-semibold text-slate-50">ShiftAware Login</h1>
+          <p className="text-sm text-slate-400">
+            Single shared password, session cookie, no PII stored.
+          </p>
+        </div>
 
-        <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '1rem' }}>
-            <label htmlFor="password" style={{
-              display: 'block',
-              marginBottom: '0.5rem',
-              fontWeight: '500',
-            }}>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <label htmlFor="password" className="text-sm font-medium text-slate-200">
               Password
             </label>
             <input
@@ -97,26 +79,13 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               disabled={loading}
-              style={{
-                width: '100%',
-                padding: '0.75rem',
-                border: '1px solid #ddd',
-                borderRadius: '4px',
-                fontSize: '1rem',
-                boxSizing: 'border-box',
-              }}
+              className="w-full rounded-lg border border-shift-border bg-slate-900 px-3 py-2 text-slate-50 outline-none ring-0 transition focus:border-shift-accent focus:ring-2 focus:ring-shift-accent/30 disabled:opacity-60"
+              placeholder="Enter shared password"
             />
           </div>
 
           {error && (
-            <div style={{
-              marginBottom: '1rem',
-              padding: '0.75rem',
-              backgroundColor: '#fee',
-              color: '#c33',
-              borderRadius: '4px',
-              fontSize: '0.875rem',
-            }}>
+            <div className="rounded-lg border border-orange-500/30 bg-orange-500/10 px-3 py-2 text-sm text-orange-200">
               {error}
             </div>
           )}
@@ -124,19 +93,9 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading || !password}
-            style={{
-              width: '100%',
-              padding: '0.75rem',
-              backgroundColor: loading ? '#ccc' : '#0070f3',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              fontSize: '1rem',
-              fontWeight: '500',
-              cursor: loading ? 'not-allowed' : 'pointer',
-            }}
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-shift-accent px-4 py-2 text-sm font-semibold text-slate-950 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? 'Logging in…' : 'Login'}
           </button>
         </form>
       </div>

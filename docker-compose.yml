@@ -7,22 +7,28 @@ services:
       dockerfile: Dockerfile
     container_name: shiftaware-app
     environment:
-      # Using existing PostgreSQL container from general_prototyping_repo network
-      # Container: general_prototyping_repo-db-1 (alias: db)
-      # Database: appdb, User: postgres, Password: postgres
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/appdb
-      PORT: 3005
-      NODE_ENV: development
+      NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL:-postgresql://shiftaware:shiftaware@db:5432/shiftaware_dev}
+      ADMIN_PASSWORD_HASH: ${ADMIN_PASSWORD_HASH:-""}
+      SESSION_SECRET: ${SESSION_SECRET:-""}
+      SESSION_TIMEOUT_MINUTES: ${SESSION_TIMEOUT_MINUTES:-60}
     ports:
-      - "3005:3005"
-    networks:
-      - general_prototyping_repo_default
-    volumes:
-      - .:/app
-      - /app/node_modules
-      - /app/.next
+      - "43000:3000"
+    depends_on:
+      - db
 
-networks:
-  general_prototyping_repo_default:
-    external: true
+  db:
+    image: postgres:16-alpine
+    container_name: shiftaware-db
+    environment:
+      POSTGRES_USER: shiftaware
+      POSTGRES_PASSWORD: shiftaware
+      POSTGRES_DB: shiftaware_dev
+    ports:
+      - "45432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
 
