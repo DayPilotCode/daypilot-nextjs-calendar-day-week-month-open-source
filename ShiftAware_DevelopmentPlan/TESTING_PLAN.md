@@ -11,19 +11,19 @@ Use this as a living checklist. Append new suites as features ship. Keep steps d
 ## Environments
 - **Dev (local compose):** app http://localhost:43000, db localhost:45432.
 - **Test data:** Starlight Meadow 2026 seed (30 aliases, 6 shifts).
-- **Secrets:** `ADMIN_PASSWORD_HASH`, `SESSION_SECRET` loaded via env; verify before tests.
+- **Secrets:** `ADMIN_PASSWORD` loaded via env; verify before tests.
 
 ## Tooling
 - HTTP: `curl` or REST client.
 - Browser/E2E: Playwright (when UI available).
-- Scripts: `node scripts/check-env.js`, `node scripts/test-password.js <pw> <hash>` (if present).
+- Scripts: `node scripts/check-env.js`.
 - Logs: `docker compose logs -f app db`.
 
 ## Smoke Checklist (run before suites)
 1) `docker compose ps` shows `app`, `db` healthy.  
 2) `curl http://localhost:43000/api/health` returns `status: ok` (once implemented).  
 3) `psql` to `postgresql://postgres:postgres@localhost:45432/appdb` succeeds.  
-4) `node scripts/check-env.js` reports `ADMIN_PASSWORD_HASH` present (if script exists).  
+4) `node scripts/check-env.js` reports `ADMIN_PASSWORD` present (if script exists).  
 5) `npm run lint` passes (if configured).
 
 ## Authentication Suite (current focus)

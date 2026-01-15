@@ -1,6 +1,7 @@
 # Development Roadmap
 
 ## Timeline Overview
+Note: status checkboxes are historical; confirm current state in `IMPLEMENTATION_LOG.md` before using this as execution status.
 **Total Duration:** ~6 weeks (single developer)
 **Start:** Early January 2026
 **Target MVP:** February 28, 2026

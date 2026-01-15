@@ -85,3 +85,8 @@ Log of repository adherence vs. development plan. Append new entries per review.
 ## 2026-01-07T18:00:00Z
 - Change: Abandoned wx-react-gantt (React 18 peer) due to React 19 incompatibility; implemented custom Day/Week timeline using react-window + date-fns, keeping Grid view for FR-005.
 - Impact: Removed DayPilot/Gantt shims; schedule visualization now React 19–native. Requires smoke on Day/Week/Grid and PDF export regression.
+
+## 2026-01-15T00:00:00Z
+- Documentation cleanup: consolidated phase logs into `IMPLEMENTATION_LOG.md`; removed obsolete phase log files.
+- Auth references standardized to plain `ADMIN_PASSWORD` and `SESSION_TIMEOUT_MINUTES` across docs.
+- Roadmap and requirements aligned to Day/Week/Grid views (no Month).
