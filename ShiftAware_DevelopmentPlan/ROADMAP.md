@@ -96,13 +96,13 @@ Note: status checkboxes are historical; confirm current state in `IMPLEMENTATION
 ## Phase 2: Visualization & Export (Week 4) [in_progress]
 
 ### Schedule Visualization (Days 1-3)
-- [ ] Replace DayPilot with custom React-window timeline (Day/Week) + Grid
+- [x] Replace DayPilot with custom React-window timeline (Day/Week) + Grid
 - [x] Enhanced Calendar component (day/week/grid views) — note: Grid required, Month removed
 - [ ] Advanced shift card interactions
 - [x] Dynamic coverage indicators
 - [x] Real-time balance metrics
 - [x] Advanced filtering (by role, member, status)
-- [ ] Responsive mobile view for schedule
+- [x] Responsive mobile view for schedule
 - [x] Persistent view preferences
 
 ### PDF Export (Days 4-5)
@@ -110,10 +110,10 @@ Note: status checkboxes are historical; confirm current state in `IMPLEMENTATION
 - [x] Member-specific schedule export
 - [x] Export with pseudonym mapping toggle
 - [ ] Batch export functionality
-- [ ] Print-optimized CSS for schedule view
+- [x] Print-optimized CSS for schedule view
 
 **Week 4 Deliverable:** Enhanced schedule visualization and production-ready PDF export  
-**Current status:** Calendar (Day/Week/Grid) complete; coverage badges, filters, metrics, persistent view in place; member-scope PDF with pseudonym map and toggle UI delivered; infinite scroll mobile polish added. Remaining: batch export, print CSS, advanced card interactions.
+**Current status:** Calendar (Day/Week/Grid) complete with custom timeline; coverage badges, filters, metrics, persistent view in place; member-scope PDF with pseudonym map and toggle UI delivered; infinite scroll mobile polish and print-optimized CSS added. Remaining: batch export (optional), advanced card interactions (optional).
 
 ---
 

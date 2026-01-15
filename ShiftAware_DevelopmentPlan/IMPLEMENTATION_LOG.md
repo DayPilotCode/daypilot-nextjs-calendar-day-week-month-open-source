@@ -92,3 +92,12 @@ Use UTC timestamps in ISO 8601. Keep entries chronological.
 - phase2: export options now include checkbox to control `includePseudonymMap` parameter (previously hardcoded to true)
 - phase2: users can now choose whether to include pseudonym mapping sheet in PDF export
 - phase2: checkbox styled consistently with existing export UI components
+
+## 2026-01-15T13:00:00Z
+- phase2: implemented print-optimized CSS for schedule view
+- phase2: added comprehensive print media queries to CalendarView.css and globals.css
+- phase2: print styles hide navigation, buttons, filters, and export controls
+- phase2: optimized timeline bars, grid cells, and scale cells for black/white printing
+- phase2: removed shadows, animations, and rounded corners in print mode
+- phase2: added page-break controls to prevent content splitting across pages
+- phase2: ensured timeline and grid views print cleanly without clipping
