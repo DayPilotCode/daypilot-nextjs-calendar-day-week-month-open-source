@@ -78,3 +78,17 @@ Use UTC timestamps in ISO 8601. Keep entries chronological.
 - phase2: stabilized timeline usability (min bar widths, non-wrapping hour/day scale with horizontal scroll)
 - phase2: fixed preferences page Clock import
 - phase2: remaining TODOs: smoke test schedule Day/Week/Grid, verify PDF export regression, polish mobile timeline, add visualization tests
+
+## 2026-01-15T12:00:00Z
+- phase2: implemented infinite horizontal scroll for timeline scale using vanilla CSS (no JavaScript)
+- phase2: timeline scale now renders 3 copies with CSS grid overlay and keyframe animations for seamless looping
+- phase2: infinite scroll activates only on screens <1024px via media query; desktop retains normal scroll behavior
+- phase2: added fade overlay gradient for smooth visual edges during animation
+- phase2: technique uses `timeline-first-loop` (0% to -200%) for initial cycle and `timeline-loop` (100% to -100%) for continuous animation
+- phase2: maintains existing timeline functionality; no breaking changes to Day/Week/Grid views
+
+## 2026-01-15T12:30:00Z
+- phase2: added pseudonym mapping toggle UI to schedule export options
+- phase2: export options now include checkbox to control `includePseudonymMap` parameter (previously hardcoded to true)
+- phase2: users can now choose whether to include pseudonym mapping sheet in PDF export
+- phase2: checkbox styled consistently with existing export UI components

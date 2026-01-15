@@ -108,12 +108,12 @@ Note: status checkboxes are historical; confirm current state in `IMPLEMENTATION
 ### PDF Export (Days 4-5)
 - [x] Advanced PDF templates (Landscape/Portrait)
 - [x] Member-specific schedule export
-- [ ] Export with pseudonym mapping toggle
+- [x] Export with pseudonym mapping toggle
 - [ ] Batch export functionality
 - [ ] Print-optimized CSS for schedule view
 
 **Week 4 Deliverable:** Enhanced schedule visualization and production-ready PDF export  
-**Current status:** Calendar (Day/Week/Grid) planned with SVAR Gantt replacement; coverage badges, filters, metrics, persistent view in place; member-scope PDF with pseudonym map delivered. Remaining: implement Gantt swap, Grid view (no Month), pseudonym toggle UI, batch export, print CSS, mobile polish, advanced card interactions.
+**Current status:** Calendar (Day/Week/Grid) complete; coverage badges, filters, metrics, persistent view in place; member-scope PDF with pseudonym map and toggle UI delivered; infinite scroll mobile polish added. Remaining: batch export, print CSS, advanced card interactions.
 
 ---
 
