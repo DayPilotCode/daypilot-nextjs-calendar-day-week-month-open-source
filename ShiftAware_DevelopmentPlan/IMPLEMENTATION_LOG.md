@@ -101,3 +101,13 @@ Use UTC timestamps in ISO 8601. Keep entries chronological.
 - phase2: removed shadows, animations, and rounded corners in print mode
 - phase2: added page-break controls to prevent content splitting across pages
 - phase2: ensured timeline and grid views print cleanly without clipping
+
+## 2026-01-15T14:00:00Z
+- phase3: created audit log API endpoint (/api/audit) with filtering by action, entity type, date range, and pagination
+- phase3: implemented comprehensive audit log viewer UI (/admin/audit) with search, filtering, and export capabilities
+- phase3: audit log viewer includes action type filtering, entity type filtering, date range selection, and text search
+- phase3: added CSV export functionality for audit logs with all relevant fields
+- phase3: enhanced coverage dashboard with quick-fill recommendations based on member preferences and availability
+- phase3: quick-fill recommendations show top 5 unstaffed shifts with suggested members who have preferences and no conflicts
+- phase3: updated coverage dashboard styling to match design system (replaced slate colors with gray/primary/accent/success palette)
+- phase3: audit log viewer displays before/after changes in expandable details with color-coded action badges
