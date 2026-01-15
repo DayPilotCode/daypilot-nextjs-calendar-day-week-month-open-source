@@ -226,9 +226,12 @@
     header,
     nav,
     aside,
-    button,
-    .print\\:hidden,
-    [class*="print:hidden"] {
+    button {
+      display: none !important;
+    }
+    
+    [class*="print:hidden"],
+    [class*="print\\:hidden"] {
       display: none !important;
     }
     

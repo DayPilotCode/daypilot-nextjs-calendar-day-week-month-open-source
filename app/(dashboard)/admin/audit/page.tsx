@@ -4,8 +4,8 @@ import { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { format } from "date-fns";
-import { Download, Search, Filter, RefreshCw } from "lucide-react";
-import type { AuditAction, EntityType } from "@prisma/client";
+import { Download, Search, RefreshCw } from "lucide-react";
+import { AuditAction, EntityType } from "@prisma/client";
 import { cn } from "@/lib/utils";
 
 interface AuditLog {
@@ -40,7 +40,8 @@ export default function AuditLogPage() {
   const [endDate, setEndDate] = useState("");
 
   useEffect(() => {
-    loadLogs();
+    loadLogs(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [actionFilter, entityTypeFilter, startDate, endDate]);
 
   async function loadLogs(reset = false) {
