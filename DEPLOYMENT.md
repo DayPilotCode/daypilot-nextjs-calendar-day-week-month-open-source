@@ -16,16 +16,25 @@
    ```
 
 2. **Configure environment variables**
+
+   Create a `.env` file in the project root or export variables:
    ```bash
-   cp .env.example .env.production
-   # Edit .env.production with your values
+   export POSTGRES_PASSWORD="your_secure_password_here"
+   export ADMIN_PASSWORD="your_admin_password_here"
+   export DATABASE_URL="postgresql://shiftaware:${POSTGRES_PASSWORD}@db:5432/shiftaware"
+   export SESSION_TIMEOUT_MINUTES=60
    ```
 
-   Required variables:
-   - `ADMIN_PASSWORD` - Shared password for admin authentication
-   - `DATABASE_URL` - PostgreSQL connection string
-   - `POSTGRES_PASSWORD` - Database password
+   **Required variables:**
+   - `POSTGRES_PASSWORD` - Database password (default: `changeme_in_production` - **CHANGE THIS!**)
+   - `ADMIN_PASSWORD` - Shared password for admin authentication (**REQUIRED**)
+   - `DATABASE_URL` - PostgreSQL connection string (format: `postgresql://USER:PASSWORD@db:5432/DBNAME`)
    - `SESSION_TIMEOUT_MINUTES` - Session timeout (default: 60)
+
+   **Note:** If using the default `POSTGRES_PASSWORD`, ensure your `DATABASE_URL` matches:
+   ```bash
+   DATABASE_URL="postgresql://shiftaware:changeme_in_production@db:5432/shiftaware"
+   ```
 
 3. **Build and start services**
    ```bash
