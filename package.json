@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-calendar-day-week-month-open-source",
+  "name": "next-js-calendar-day-week-month-open-source",
   "version": "0.1.0",
   "private": true,
   "license": "Apache-2.0",
@@ -7,10 +7,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint"
   },
   "dependencies": {
-    "@daypilot/daypilot-lite-react": "^5.1.0",
+    "@daypilot/daypilot-lite-react": "^6.2.0",
     "next": "16.1.1",
     "react": "19.2.3",
     "react-dom": "19.2.3"

@@ -34,6 +34,7 @@ body .month_default_event_inner {
 
 .content {
     flex-grow: 1;
+    min-width: 0;
 }
 
 /* toolbar */

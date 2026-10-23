@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from "react";
 import { DayPilot, DayPilotCalendar, DayPilotMonth, DayPilotNavigator } from "@daypilot/daypilot-lite-react";
 import "./Calendar.css";
 
@@ -51,16 +51,113 @@ const teams = [
     {name: "Sales", id: "Sales"},
 ];
 
+const createEvents = (): DayPilot.EventData[] => {
+    const first = DayPilot.Date.today().firstDayOfWeek().addDays(1);
+    const data = [
+        {
+            id: 1,
+            text: "Event 1",
+            start: first.addHours(10),
+            end: first.addHours(12),
+            tags: {
+                color: "#cd5c5c",
+                assigned: "Amélie",
+                location: "Conference Room A",
+                team: "Marketing"
+            }
+        },
+        {
+            id: 2,
+            text: "Event 2",
+            start: first.addDays(1).addHours(14),
+            end: first.addDays(1).addHours(16),
+            tags: {
+                color: "#93c47d",
+                assigned: "Bernhard",
+                location: "Online Meeting",
+                team: "Sales"
+            }
+        },
+        {
+            id: 9,
+            text: "Event 9",
+            start: first.addHours(13),
+            end: first.addHours(15),
+            tags: {
+                color: "#76a5af",
+                assigned: "Carlo",
+                location: "HQ - Floor 2",
+                team: "Development"
+            }
+        },
+        {
+            id: 3,
+            text: "Event 3",
+            start: first.addDays(1).addHours(9),
+            end: first.addDays(1).addHours(11),
+            tags: {
+                color: "#ffd966",
+                assigned: "Diana",
+                location: "Conference Room B",
+                team: "HR"
+            }
+        },
+        {
+            id: 4,
+            text: "Event 4",
+            start: first.addDays(1).addHours(11).addMinutes(30),
+            end: first.addDays(1).addHours(13).addMinutes(30),
+            tags: {
+                color: "#f6b26b",
+                assigned: "Eva",
+                location: "Conference Room B",
+                team: "Product"
+            }
+        },
+        {
+            id: 5,
+            text: "Event 5",
+            start: first.addDays(4).addHours(9),
+            end: first.addDays(4).addHours(11),
+            tags: {
+                color: "#8e7cc3",
+                assigned: "Francesco",
+                location: "Skype Link",
+                team: "Marketing"
+            }
+        },
+        {
+            id: 6,
+            text: "Event 6",
+            start: first.addDays(4).addHours(13),
+            end: first.addDays(4).addHours(15),
+            tags: {
+                color: "#6fa8dc",
+                assigned: "Lotte",
+                location: "HQ - Floor 1",
+                team: "Finance"
+            }
+        },
+        {
+            id: 8,
+            text: "Event 8",
+            start: first.addDays(5).addHours(13),
+            end: first.addDays(5).addHours(15),
+            tags: {
+                color: "#b6d7a8",
+                assigned: "Erik",
+                location: "Zoom Link",
+                team: "Legal"
+            }
+        }
+    ];
+    return data;
+};
+
 const Calendar = () => {
     const [view, setView] = useState<ViewType>("Week");
     const [startDate, setStartDate] = useState<DayPilot.Date>(DayPilot.Date.today());
-    const [events, setEvents] = useState<DayPilot.EventData[]>([]);
-
-    type AnyCalendar = DayPilot.Calendar | DayPilot.Month;
-
-    const [dayView, setDayView] = useState<DayPilot.Calendar>();
-    const [weekView, setWeekView] = useState<DayPilot.Calendar>();
-    const [monthView, setMonthView] = useState<DayPilot.Month>();
+    const [events, setEvents] = useState<DayPilot.EventData[]>(createEvents);
 
     const onTimeRangeSelected = async (args: DayPilot.CalendarTimeRangeSelectedArgs | DayPilot.MonthTimeRangeSelectedArgs) => {
         const calendar = args.control;
@@ -144,7 +241,7 @@ const Calendar = () => {
                 fontColor: "#fff",
                 text: `Team: ${teamName}`,
                 style:
-                    "text-align: center; font-size: 11px; line-height: 18px; overflow: hidden; text-overflow: ellipsis; cursor: default;"
+                    "text-align: center; font-size: 10px; line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: default;"
             }
         ];
     };
@@ -216,8 +313,7 @@ const Calendar = () => {
             {
                 text: "Delete",
                 onClick: async args => {
-                    const calendar: AnyCalendar = args.source.calendar;
-                    calendar.events.remove(args.source);
+                    setEvents(prevEvents => prevEvents.filter(item => item.id !== args.source.id()));
                 },
             },
             {
@@ -232,114 +328,14 @@ const Calendar = () => {
         ]
     });
 
-    useEffect(() => {
-        const first = DayPilot.Date.today().firstDayOfWeek().addDays(1);
-        const data = [
-            {
-                id: 1,
-                text: "Event 1",
-                start: first.addHours(10),
-                end: first.addHours(12),
-                tags: {
-                    color: "#cd5c5c",
-                    assigned: "Amélie",
-                    location: "Conference Room A",
-                    team: "Marketing"
-                }
-            },
-            {
-                id: 2,
-                text: "Event 2",
-                start: first.addDays(1).addHours(14),
-                end: first.addDays(1).addHours(16),
-                tags: {
-                    color: "#93c47d",
-                    assigned: "Bernhard",
-                    location: "Online Meeting",
-                    team: "Sales"
-                }
-            },
-            {
-                id: 9,
-                text: "Event 9",
-                start: first.addHours(13),
-                end: first.addHours(15),
-                tags: {
-                    color: "#76a5af",
-                    assigned: "Carlo",
-                    location: "HQ - Floor 2",
-                    team: "Development"
-                }
-            },
-            {
-                id: 3,
-                text: "Event 3",
-                start: first.addDays(1).addHours(9),
-                end: first.addDays(1).addHours(11),
-                tags: {
-                    color: "#ffd966",
-                    assigned: "Diana",
-                    location: "Conference Room B",
-                    team: "HR"
-                }
-            },
-            {
-                id: 4,
-                text: "Event 4",
-                start: first.addDays(1).addHours(11).addMinutes(30),
-                end: first.addDays(1).addHours(13).addMinutes(30),
-                tags: {
-                    color: "#f6b26b",
-                    assigned: "Eva",
-                    location: "Conference Room B",
-                    team: "Product"
-                }
-            },
-            {
-                id: 5,
-                text: "Event 5",
-                start: first.addDays(4).addHours(9),
-                end: first.addDays(4).addHours(11),
-                tags: {
-                    color: "#8e7cc3",
-                    assigned: "Francesco",
-                    location: "Skype Link",
-                    team: "Marketing"
-                }
-            },
-            {
-                id: 6,
-                text: "Event 6",
-                start: first.addDays(4).addHours(13),
-                end: first.addDays(4).addHours(15),
-                tags: {
-                    color: "#6fa8dc",
-                    assigned: "Lotte",
-                    location: "HQ - Floor 1",
-                    team: "Finance"
-                }
-            },
-            {
-                id: 8,
-                text: "Event 8",
-                start: first.addDays(5).addHours(13),
-                end: first.addDays(5).addHours(15),
-                tags: {
-                    color: "#b6d7a8",
-                    assigned: "Erik",
-                    location: "Zoom Link",
-                    team: "Legal"
-                }
-            }
-        ];
-        setEvents(data);
-    }, []);
+
 
     return (
         <div className={"container"}>
             <div className={"navigator"}>
                 <DayPilotNavigator
                     selectMode={view}
+                    selectionDay={startDate}
                     showMonths={3}
                     skipMonths={3}
                     onTimeRangeSelected={args => setStartDate(args.day)}
@@ -365,7 +361,6 @@ const Calendar = () => {
                     onEventClick={async args => editEvent(args.e)}
                     onTimeRangeSelected={onTimeRangeSelected}
                     onBeforeEventRender={onBeforeEventRenderDayWeek}
-                    controlRef={setDayView}
                 />
                 <DayPilotCalendar
                     viewType={"Week"}
@@ -377,19 +372,18 @@ const Calendar = () => {
                     onEventClick={async args => editEvent(args.e)}
                     onTimeRangeSelected={onTimeRangeSelected}
                     onBeforeEventRender={onBeforeEventRenderDayWeek}
-                    controlRef={setWeekView}
                 />
                 <DayPilotMonth
                     startDate={startDate}
                     events={events}
                     visible={view === "Month"}
+                    cellHeight={60}
                     eventHeight={50}
                     eventBarVisible={false}
                     contextMenu={contextMenu}
                     onEventClick={async args => editEvent(args.e)}
                     onTimeRangeSelected={onTimeRangeSelected}
                     onBeforeEventRender={onBeforeEventRenderMonth}
-                    controlRef={setMonthView}
                 />
             </div>
         </div>
